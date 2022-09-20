@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>Cat Run</title>
+        <style>
+            body {
+                margin: 0px;
+                background-color: #807182;
+            }
+            .container {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                height: 580px;
+                width: 400px;
+                padding: 20px;
+            }
+            .titleContainer {
+                width: 100%;
+                height: 40%;
+            }
+            .title {
+                position: relative;
+                font-family: 'trebuchet MS';
+                font-size: 80px;
+                color: aquamarine;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+            }
+            .separator {
+                width: 100%;
+                height: 30%;
+            }
+            .buttonContainer {
+                width: 100%;
+                height: 30%;
+            }
+            .button {
+                position: relative;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 80px;
+            }
+            button {
+                background-color: aquamarine;
+                font-family: 'trebuchet MS';
+                color: #807182;
+                font-size: 20px;
+                height: 80px;
+                width: 80px;
+                border-style: solid;
+                border-radius: 50%;
+                border-width: 2px;
+                border-color: antiquewhite;
+                transition-duration: 0.2s;
+            }
+            button:hover {
+                background-color: #807182;
+                color: aquamarine;
+            }
+            #menu {
+                visibility: hidden;
+            }
+            .page {
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.592);
+                width: 100%;
+                height: 100vh;
+            }
+            .score {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                font-size: 40px;
+                color: aquamarine;
+                font-family: 'trebuchet MS';
+                visibility: hidden;
+            }
+        </style>
+        <body>
+            <div class="score" id="score">Score</div>
+            <div class="page" id="menu">
+                <div class="container" style="width: 600px;">
+                    <div class="titleContainer" id="text" >
+                        <div class="title">
+                            GAME OVER
+                        </div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="buttonContainer">
+                        <div class="button" style="height: 100px; width: 100px;">
+                            <button id="restart">Restart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="page">
+                <div class="titleContainer">
+                    <div class="title">
+                        CatRun
+                    </div>
+                </div>
+                <div class="separator"></div>
+                <div class="buttonContainer">
+                    <div class="button">
+                        <button id="start">Start</button>
+                    </div>
+                </div>
+            </div>
+        </body>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "../node_modules/three/build/three.module.js",
+                    "three/addons/": "../node_modules/three/examples/jsm/"
+                }
+            }
+        </script>
+        <script src='../node_modules/stats.js/build/stats.min.js'></script>
+        <script type="text/javascript" src="src/debug/DAT.GUI.min.js"></script>
+        <script type="module" src="src/element/element.js"></script>
+        <script type="module" src="src/element/cat/animation.js"></script>
+        <script type="module" src="src/element/cat/cat.js""></script>
+        <script type="module" src="src/element/decoration/ceilingLight.js"></script>
+        <script type="module" src="src/element/obstacles/animation.js"></script>
+        <script type="module" src="src/element/obstacles/obstacles.js"></script>
+        <script type="module" src="src/element/obstacles/table.js"></script>
+        <script type="module" src="src/element/obstacles/turnstile.js"></script>
+        <script type="module" src="src/element/room/room.js"></script>
+        <script type="module" src="src/element/room/transitionRoom.js"></script>
+        <script type="module" src="src/element/room/utils.js"></script>
+        <script type="module" src="src/element/room/wallWindow.js"></script>
+        <script type="module" src="src/element/room/windows.js"></script>
+        <script type="module" src="src/flow/animation.js"></script>
+        <script type="module" src="src/flow/check.js"></script>
+        <script type="module" src="src/flow/controlGame.js"></script>
+        <script type="module" src="src/flow/creation.js"></script>
+        <script src="src/flow/elementManager.js"></script>
+        <script type="module" src="src/flow/update.js"></script>
+        <script type="module" src="src/utils/mathUtils.js"></script>
+        <script type="module" src="src/utils/utils.js"></script>
+        <script type="module" src="tween.umd.js"></script>
+        <script type="module" src="src/game.js"></script>
+        <script type="module" src="src/catScene.js"></script>
+    </head>
+</html>

@@ -8,20 +8,20 @@ var catTexture = [];
 export function loadCatTexture(loader) {
   catTexture = [
     new THREE.MeshPhongMaterial({
-      map: loader.load("element/cat/texture/lateralBody.png"),
+      map: loader.load("src/element/cat/texture/lateralBody.png"),
     }),
     new THREE.MeshPhongMaterial({
-      map: loader.load("element/cat/texture/frontFace.png"),
+      map: loader.load("src/element/cat/texture/frontFace.png"),
     }),
     new THREE.MeshPhongMaterial({
-      map: loader.load("element/cat/texture/lateralFace.png"),
+      map: loader.load("src/element/cat/texture/lateralFace.png"),
     }),
     new THREE.MeshPhongMaterial({
-      map: loader.load("element/cat/texture/lateralFace2.png"),
+      map: loader.load("src/element/cat/texture/lateralFace2.png"),
     }),
-    new THREE.MeshPhongMaterial({ map: loader.load("element/cat/texture/eye.png") }),
-    new THREE.MeshPhongMaterial({ map: loader.load("element/cat/texture/nose.png") }),
-    new THREE.MeshPhongMaterial({ map: loader.load("element/cat/texture/ear.png") }),
+    new THREE.MeshPhongMaterial({ map: loader.load("src/element/cat/texture/eye.png") }),
+    new THREE.MeshPhongMaterial({ map: loader.load("src/element/cat/texture/nose.png") }),
+    new THREE.MeshPhongMaterial({ map: loader.load("src/element/cat/texture/ear.png") }),
   ];
 }
 

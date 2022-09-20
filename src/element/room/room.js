@@ -133,10 +133,10 @@ export class Room extends Element {
 
 export function loadRoomTexture(loader) {
 
-    const texture2 = loader.load("element/texture/wallTexture4.png");
-    const texture3 = loader.load("element/texture/wallTextureNormal3.png");
-    const texture4 = loader.load("element/texture/floorTexture.png");
-    const texture5 = loader.load("element/texture/floorNormal.png");
+    const texture2 = loader.load("src/element/texture/wallTexture4.png");
+    const texture3 = loader.load("src/element/texture/wallTextureNormal3.png");
+    const texture4 = loader.load("src/element/texture/floorTexture.png");
+    const texture5 = loader.load("src/element/texture/floorNormal.png");
     roomTexture = [
         texture2,
         texture3,

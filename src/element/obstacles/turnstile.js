@@ -73,8 +73,8 @@ class Turnstile extends Element {
 }
 
 export function loadTurnStileTexture(loader) {
-    const texture1 = loader.load("element/texture/redTurn.png");
-    const texture2 = loader.load("element/texture/greenTurn.png");
+    const texture1 = loader.load("src/element/texture/redTurn.png");
+    const texture2 = loader.load("src/element/texture/greenTurn.png");
 
     turnstileTexture = [texture1, texture2];
 }
