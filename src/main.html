@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+		</style>
+		<button id="x">Angle x</button>
+		<button id="y">Angle y</button>
+        <button id="z">Angle z</button>
+		<button id="jump">Jump</button>
+		<button id="slip">Slip</button>
+	</head>
+	<body>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../node_modules/three/build/three.module.js",
+					"three/addons/": "../node_modules/three/examples/jsm/"
+				}
+			}
+		</script>
+		<script src="../node_modules/three/build/three.js"></script>
+		<script type="module" src="element/element.js"></script>
+		<script type="module" src="element/cat/cat.js"></script>
+		<script type="module" src="element/cat/animation.js"></script>
+		<script type="module" src="element/decoration/ceilingLight.js"></script>
+		<script type="module" src="element/decoration/computer.js"></script>
+		<script type="module" src="element/obstacles/table.js"></script>
+		<script type="module" src="element/obstacles/turnstile.js"></script>
+		<script src="control.js"></script>
+		<script type="module" src="utils/utils.js"></script>
+		<script type="module" src="main.js"></script>
+	</body>
+</html>

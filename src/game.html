@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CatRun</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "../node_modules/three/build/three.module.js",
+					"three/addons/": "../node_modules/three/examples/jsm/",
+          "stats": "../node_modules/stats.js/build/stats.min.js"
+				}
+			}
+		</script>
+    <script src='../node_modules/stats.js/build/stats.min.js'></script>
+    <script type="text/javascript" src="debug/DAT.GUI.min.js"></script>
+    <script type="module" src="element/element.js"></script>
+    <script type="module" src="element/cat/animation.js"></script>
+    <script type="module" src="element/cat/cat.js""></script>
+    <script type="module" src="element/decoration/ceilingLight.js"></script>
+    <script type="module" src="element/obstacles/animation.js"></script>
+    <script type="module" src="element/obstacles/obstacles.js"></script>
+    <script type="module" src="element/obstacles/table.js"></script>
+    <script type="module" src="element/obstacles/turnstile.js"></script>
+    <script type="module" src="element/room/room.js"></script>
+    <script type="module" src="element/room/transitionRoom.js"></script>
+    <script type="module" src="element/room/utils.js"></script>
+    <script type="module" src="element/room/wallWindow.js"></script>
+    <script type="module" src="element/room/windows.js"></script>
+    <script type="module" src="flow/animation.js"></script>
+    <script type="module" src="flow/check.js"></script>
+    <script type="module" src="flow/controlGame.js"></script>
+    <script type="module" src="flow/creation.js"></script>
+    <script src="flow/elementManager.js"></script>
+    <script type="module" src="flow/update.js"></script>
+    <script type="module" src="utils/mathUtils.js"></script>
+    <script type="module" src="utils/utils.js"></script>
+    <script type="module" src="../tween.umd.js"></script>
+    <script type="module" src="game.js"></script>
+  </body>
+</html>
