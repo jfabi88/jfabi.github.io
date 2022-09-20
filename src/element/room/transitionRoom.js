@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three';
 
 import {Room} from "./room.js";
 import {createWall} from "./wallWindow.js";

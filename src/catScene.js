@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three';
 
 import { loadCatTexture, createCat } from "./element/cat/cat.js";
 import {loadRoomTexture} from "./element/room/room.js";

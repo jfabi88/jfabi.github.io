@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three';
 
 import {getRandomInt} from "../../utils/utils.js";
 import { placeObj } from '../../utils/utils.js';

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three';
 
 import { createWall, createWallWindows } from "./wallWindow.js";
 import {getRandomInt} from "../../utils/utils.js";

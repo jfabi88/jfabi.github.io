@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './three';
 
 import { createGeometryPlane, createMesh, createPlane } from '../../utils/utils.js';
 
