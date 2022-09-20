@@ -1,4 +1,4 @@
-import {Vector3} from './three';
+import {Vector3} from 'three';
 
 export function checkIn(cat, tRoomA, wallsA) {
     for (var i = 0; i < tRoomA.length; i++) {

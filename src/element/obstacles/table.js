@@ -1,4 +1,4 @@
-import * as THREE from './three';
+import * as THREE from 'three';
 
 import {Element} from "../element.js";
 import {createCube, objDispose, createGeometryCube, createMesh} from "../../utils/utils.js";

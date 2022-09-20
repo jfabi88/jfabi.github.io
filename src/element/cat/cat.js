@@ -1,4 +1,4 @@
-import * as THREE from './three';
+import * as THREE from 'three';
 
 import { createJumpAnimation, createSlipAnimation } from './animation.js';
 import { createCube } from '../../utils/utils.js';

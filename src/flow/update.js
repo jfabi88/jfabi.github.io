@@ -1,4 +1,4 @@
-import {Vector3} from './three';
+import {Vector3} from 'three';
 
 import { createTransitionRoom } from '../element/room/transitionRoom.js';
 import { removeFromArray } from '../utils/utils.js';

@@ -1,4 +1,4 @@
-import * as THREE from './three';
+import * as THREE from 'three';
 
 import { createGeoMatRoom, createObjectRoom, createObjRoomInstance } from './room.js';
 import { Element } from '../element.js';

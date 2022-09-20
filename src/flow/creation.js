@@ -1,4 +1,4 @@
-import * as THREE from './three';
+import * as THREE from 'three';
 
 import {createTransitionRoomBack, createTransitionRoomLeft, createTransitionRoomLeftRight, createTransitionRoomRight} from "../element/room/transitionRoom.js"
 import {obstaclesCreate} from "../element/obstacles/obstacles.js";

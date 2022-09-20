@@ -1,4 +1,4 @@
-import * as THREE from './three';
+import * as THREE from 'three';
 import { componeGeometry, createGeometryOctagon, createMesh } from '../../utils/utils.js';
 
 import {Element} from "../element.js";
