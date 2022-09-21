@@ -1,6 +1,7 @@
 
 class Table extends Element {
     intersectionLimit = [];
+    intersectionMesh = [];
     constructor (obj, width, height, depth, intersectionLimit) {
         super(obj, width, height, depth)
         this.intersectionLimit = intersectionLimit;
@@ -88,6 +89,7 @@ function intersectionTable(table, cat)
     obj.add(top1);
 
     const table = new Table(obj, top1W, legH + top1H + top2H, top2D, [(legH - top1H - top2H) / 2, (legH + top1H + top2H) / 2]);
+    table.intersectionMesh = [[0], [0, 0], [0, 1], [0, 2]];
 
     return (table);
 }

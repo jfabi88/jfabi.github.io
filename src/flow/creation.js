@@ -67,6 +67,11 @@
     mainScene.distance = 0;
     mainScene.ambientSpeed = 100;
     mainScene.score = 0;
+    mainScene.died = false;
+
+    const elem = document.getElementById("pressStart");
+    elem.style.visibility = "visible";
+
     setFlag(true);
 }
 

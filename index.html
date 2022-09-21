@@ -5,8 +5,17 @@
         <title>Cat Run</title>
         <style>
             body {
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                -khtml-user-select: none; /* Konqueror HTML */
+                -moz-user-select: none; /* Old versions of Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
                 margin: 0px;
                 background-color: #807182;
+                font-family: 'trebuchet MS';
+                color: aquamarine;
             }
             .container {
                 position: absolute;
@@ -23,9 +32,7 @@
             }
             .title {
                 position: relative;
-                font-family: 'trebuchet MS';
                 font-size: 80px;
-                color: aquamarine;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
@@ -48,7 +55,6 @@
             }
             button {
                 background-color: aquamarine;
-                font-family: 'trebuchet MS';
                 color: #807182;
                 font-size: 20px;
                 height: 80px;
@@ -77,9 +83,11 @@
                 top: 20px;
                 left: 20px;
                 font-size: 40px;
-                color: aquamarine;
-                font-family: 'trebuchet MS';
                 visibility: hidden;
+            }
+            #pressStart {
+                visibility: hidden;
+                font-size: 35px;
             }
         </style>
         <body>
@@ -96,6 +104,13 @@
                         <div class="button" style="height: 100px; width: 100px;">
                             <button id="restart">Restart</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="pressStart" style="height: 100px; width: 600px;">
+                <div class="titleContainer">
+                    <div class="title">
+                        Press Space
                     </div>
                 </div>
             </div>
@@ -119,6 +134,7 @@
         <script src="./src/element/cat/animation.js"></script>
         <script src="./src/element/cat/cat.js""></script>
         <script src="./src/element/decoration/ceilingLight.js"></script>
+        <script src="src/element/decoration/computer.js"></script>
         <script src="./src/element/obstacles/animation.js"></script>
         <script src="./src/element/obstacles/obstacles.js"></script>
         <script src="./src/element/obstacles/table.js"></script>

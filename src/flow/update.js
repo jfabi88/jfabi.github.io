@@ -34,6 +34,9 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     tRoom.available = false;
     tRoom.connect(mainScene.lastObj[0].getConnectionPoints()[0]);
 
+    if (tRoom.type != "TB")
+        tRoom.enabled = true;
+
     tRoom.obj.visible = true;
     //mainScene.scene.add(tRoom.obj);
     elementsArray.push(tRoom);
@@ -66,8 +69,6 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
         if (elem.obj.position.z > 120) {
             removeFromArray(mainScene.scene, elem, mainScene.elementsA);
             flag = true;
-            if (elem.type != "TB")
-                elem.enabled = true;
         }
     });
     toMove.forEach(function (elem) {

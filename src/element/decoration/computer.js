@@ -2,15 +2,23 @@
 
 const computerTexture = [];
 
+class Computer extends Element {
+    intersectionMesh = [];
+    constructor (obj, width, height, depth) {
+        super(obj, width, height, depth)
+        this.type = "Computer";
+    };
+}
+
 function loadComputerTexture(loader) {
-    const texture1 = loader.load("element/texture/imac.png");
+    const texture1 = loader.load("src/element/texture/imac.png");
 
     texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
     texture1.repeat.set(0.135, 0.18);
     texture1.offset.set(0.5, -0.35);
     texture1.rotation = Math.PI;
 
-    const texture2 = loader.load("element/texture/applelogo.png");
+    const texture2 = loader.load("src/element/texture/applelogo.png");
 
     texture2.wrapS = texture2.wrapT = THREE.RepeatWrapping;
     texture2.repeat.set(0.135, 0.18);
@@ -48,7 +56,7 @@ function createComputer () {
 
     obj.add(meshBottom);
 
-    obj.scale.set(5, 5, 5);
+    //obj.scale.set(5, 5, 5);
 
     const middle = new THREE.Shape()
     .moveTo(-1, -1.5)
@@ -94,11 +102,6 @@ function createComputer () {
     const mP2P4 = [p2[0] + ((p4[0] - p2[0]) / 2), p4[1] + ((p2[1] - p4[1]) / 2)];
     const pRotation13 = 0.05;
     const pRotation24 = 0.2;
-
-    console.log(p1);
-    console.log(p2);
-    console.log(p3);
-    console.log(p4);
 
     const btoM = new THREE.Shape()
     .moveTo(p1[0], p1[1])
@@ -179,6 +182,7 @@ function createComputer () {
     meshScreen.position.z = meshMiddle.position.z + (Math.cos(rotationAngle) * (1.5));
     obj.add(meshScreen);
 
-    const ret = new Element(obj, 1, 1, 0.5);
+    const ret = new Computer(obj, 1, 1.2, 0.5);
+    ret.intersectionMesh = [[3]];
     return ret;
 }

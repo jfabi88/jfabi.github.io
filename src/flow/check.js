@@ -26,6 +26,11 @@
 }
 
  function checkIntersection(obstaclesA, cat) {
+    for (var i = 0; i < obstaclesA.length; i++) {
+        if (cat.checkIntersection(obstaclesA[i]))
+            return true;
+    }
+    /*
     const frontC = cat.obj.position.z - cat.depth / 2;
     const backC = cat.obj.position.z + cat.depth / 2;
     const posO = new THREE.Vector3();
@@ -38,6 +43,6 @@
                 return true;
             }
         }
-    }
+    }*/
     return false;
 }

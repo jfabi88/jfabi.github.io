@@ -1,23 +1,23 @@
 
  function createJumpAnimation(cat, mixers, actions) {
-    const times = [0, 0.5, 1.0];
-    const values = [cat.center.position.x, cat.center.position.y, cat.center.position.z, cat.center.position.x, cat.center.position.y + 5, cat.center.position.z, cat.center.position.x, cat.center.position.y, cat.center.position.z];
+    const times = [0, 0.4, 0.6, 1.0];
+    const values = [cat.center.position.x, cat.center.position.y, cat.center.position.z, cat.center.position.x, cat.center.position.y + 15, cat.center.position.z, cat.center.position.x, cat.center.position.y + 15, cat.center.position.z, cat.center.position.x, cat.center.position.y, cat.center.position.z];
     const rP1 = rotateOnPoint(cat.leg1, new THREE.Vector3(3.01, -2.25, 5.26), new THREE.Vector3(1, 0, 0), -90 * THREE.MathUtils.DEG2RAD);
     const rP2 = rotateOnPoint(cat.leg2, new THREE.Vector3(-3.01, -2.25, 5.26), new THREE.Vector3(1, 0, 0), -90 * THREE.MathUtils.DEG2RAD);
     const rP3 = rotateOnPoint(cat.leg3, new THREE.Vector3(3.01, -2.25, -5.26), new THREE.Vector3(1, 0, 0), 90 * THREE.MathUtils.DEG2RAD);
     const rP4 = rotateOnPoint(cat.leg4, new THREE.Vector3(-3.01, -2.25, -5.26), new THREE.Vector3(1, 0, 0), 90 * THREE.MathUtils.DEG2RAD);
 
-    const valueJP1 = [cat.leg1.position.x, cat.leg1.position.y, cat.leg1.position.z, rP1[0].x, rP1[0].y, rP1[0].z, cat.leg1.position.x, cat.leg1.position.y, cat.leg1.position.z];
-    const valueJR1 = [cat.leg1.quaternion.x, cat.leg1.quaternion.y, cat.leg1.quaternion.z, cat.leg1.quaternion.w, rP1[1].x, rP1[1].y, rP1[1].z, rP1[1].w, cat.leg1.quaternion.x, cat.leg1.quaternion.y, cat.leg1.quaternion.z, cat.leg1.quaternion.w];
+    const valueJP1 = [cat.leg1.position.x, cat.leg1.position.y, cat.leg1.position.z, rP1[0].x, rP1[0].y, rP1[0].z, rP1[0].x, rP1[0].y, rP1[0].z, cat.leg1.position.x, cat.leg1.position.y, cat.leg1.position.z];
+    const valueJR1 = [cat.leg1.quaternion.x, cat.leg1.quaternion.y, cat.leg1.quaternion.z, cat.leg1.quaternion.w, rP1[1].x, rP1[1].y, rP1[1].z, rP1[1].w, rP1[1].x, rP1[1].y, rP1[1].z, rP1[1].w, cat.leg1.quaternion.x, cat.leg1.quaternion.y, cat.leg1.quaternion.z, cat.leg1.quaternion.w];
 
-    const valueJP2 = [cat.leg2.position.x, cat.leg2.position.y, cat.leg2.position.z, rP2[0].x, rP2[0].y, rP2[0].z, cat.leg2.position.x, cat.leg2.position.y, cat.leg2.position.z];
-    const valueJR2 = [cat.leg2.quaternion.x, cat.leg2.quaternion.y, cat.leg2.quaternion.z, cat.leg2.quaternion.w, rP2[1].x, rP2[1].y, rP2[1].z, rP2[1].w, cat.leg2.quaternion.x, cat.leg2.quaternion.y, cat.leg2.quaternion.z, cat.leg2.quaternion.w];
+    const valueJP2 = [cat.leg2.position.x, cat.leg2.position.y, cat.leg2.position.z, rP2[0].x, rP2[0].y, rP2[0].z, rP2[0].x, rP2[0].y, rP2[0].z, cat.leg2.position.x, cat.leg2.position.y, cat.leg2.position.z];
+    const valueJR2 = [cat.leg2.quaternion.x, cat.leg2.quaternion.y, cat.leg2.quaternion.z, cat.leg2.quaternion.w, rP2[1].x, rP2[1].y, rP2[1].z, rP2[1].w, rP2[1].x, rP2[1].y, rP2[1].z, rP2[1].w, cat.leg2.quaternion.x, cat.leg2.quaternion.y, cat.leg2.quaternion.z, cat.leg2.quaternion.w];
 
-    const valueJP3 = [cat.leg3.position.x, cat.leg3.position.y, cat.leg3.position.z, rP3[0].x, rP3[0].y, rP3[0].z, cat.leg3.position.x, cat.leg3.position.y, cat.leg3.position.z];
-    const valueJR3 = [cat.leg3.quaternion.x, cat.leg3.quaternion.y, cat.leg3.quaternion.z, cat.leg3.quaternion.w, rP3[1].x, rP3[1].y, rP3[1].z, rP3[1].w, cat.leg3.quaternion.x, cat.leg3.quaternion.y, cat.leg3.quaternion.z, cat.leg3.quaternion.w];
+    const valueJP3 = [cat.leg3.position.x, cat.leg3.position.y, cat.leg3.position.z, rP3[0].x, rP3[0].y, rP3[0].z, rP3[0].x, rP3[0].y, rP3[0].z, cat.leg3.position.x, cat.leg3.position.y, cat.leg3.position.z];
+    const valueJR3 = [cat.leg3.quaternion.x, cat.leg3.quaternion.y, cat.leg3.quaternion.z, cat.leg3.quaternion.w, rP3[1].x, rP3[1].y, rP3[1].z, rP3[1].w, rP3[1].x, rP3[1].y, rP3[1].z, rP3[1].w,cat.leg3.quaternion.x, cat.leg3.quaternion.y, cat.leg3.quaternion.z, cat.leg3.quaternion.w];
 
-    const valueJP4 = [cat.leg4.position.x, cat.leg4.position.y, cat.leg4.position.z, rP4[0].x, rP4[0].y, rP4[0].z, cat.leg4.position.x, cat.leg4.position.y, cat.leg4.position.z];
-    const valueJR4 = [cat.leg4.quaternion.x, cat.leg4.quaternion.y, cat.leg4.quaternion.z, cat.leg4.quaternion.w, rP4[1].x, rP4[1].y, rP4[1].z, rP4[1].w, cat.leg4.quaternion.x, cat.leg4.quaternion.y, cat.leg4.quaternion.z, cat.leg4.quaternion.w];
+    const valueJP4 = [cat.leg4.position.x, cat.leg4.position.y, cat.leg4.position.z, rP4[0].x, rP4[0].y, rP4[0].z, rP4[0].x, rP4[0].y, rP4[0].z, cat.leg4.position.x, cat.leg4.position.y, cat.leg4.position.z];
+    const valueJR4 = [cat.leg4.quaternion.x, cat.leg4.quaternion.y, cat.leg4.quaternion.z, cat.leg4.quaternion.w, rP4[1].x, rP4[1].y, rP4[1].z, rP4[1].w, rP4[1].x, rP4[1].y, rP4[1].z, rP4[1].w, cat.leg4.quaternion.x, cat.leg4.quaternion.y, cat.leg4.quaternion.z, cat.leg4.quaternion.w];
 
     const positionKf = new THREE.VectorKeyframeTrack(".position", times, values);
     const positionLeg1 = new THREE.VectorKeyframeTrack(".position", times, valueJP1);

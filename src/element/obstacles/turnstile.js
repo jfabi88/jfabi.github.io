@@ -5,6 +5,7 @@ class Turnstile extends Element {
     rotation1 = null;
     rotation2 = null;
     enabled = false;
+    intersectionMesh = [];
     constructor (obj, width, height, depth, r1, r2) {
         super(obj, width, height, depth);
         this.rotation1 = r1;
@@ -263,6 +264,7 @@ function createHalfTurnstile(texture, light) {
     const r1 = leftTurn.children[0].children[1];
     const r2 = rightTurn.children[0].children[1];
     const ret = new Turnstile(obj, 21, 14, 1, r1, r2);
+    ret.intersectionMesh = [[0, 0], [0, 0, 1], [0, 0, 2], [0, 0, 1, 0], [1, 0, 0], [1, 0, 1], [1, 0, 2], [1, 0, 1, 0]];
     ret.enabled = flag;
     return ret;
 }

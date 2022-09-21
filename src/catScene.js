@@ -97,6 +97,7 @@ function stop(mainScene) {
     const menu = document.getElementById("menu");
     menu.style.visibility = "visible";
     mainScene.pause = true;
+    mainScene.died = true;
 }
 
 function init() {
@@ -144,6 +145,7 @@ function init() {
         catspeed: 0,
         ambientSpeed: 100,
         pause: true,
+        died: false,
         score: 0,
         room: null,
         lastObj: [],
@@ -157,6 +159,7 @@ function init() {
         widthRoom: 80,
         heightRoom: 80,
         depthRoom: 120,
+        start: 0,
         mixers: [],
     };
 
@@ -168,6 +171,7 @@ function init() {
     const loadManagerGame = new THREE.LoadingManager();
     const loaderGame = new THREE.TextureLoader(loadManagerGame);
 
+    loadComputerTexture(loaderGame);
     loadTurnStileTexture(loaderGame);
     loadRoomTexture(loaderGame);
 
@@ -182,6 +186,8 @@ function init() {
         cat.mixers.forEach((mixer) => {
           mainScene.mixers.push(mixer);
         });
+
+        mainScene.start += 1;
     }
 
     loadManagerGame.onLoad = () => {
@@ -210,6 +216,11 @@ function init() {
 
             camera = camera2;
             scene = scene2;
+
+            mainScene.start += 1;
+
+            elem = document.getElementById("pressStart");
+            elem.style.visibility = "visible";
         }
     };
 

@@ -56,7 +56,7 @@ const materialM = [];
         var obstacle;
 
         if (flagLightFlag == 2) {
-            this.obj.children[11].visible = true;
+            //this.obj.children[11].visible = true;
             //cLight = takeElement(memory, "CeilingLight");
             //if (cLight) {  
             //    cLight.obj.position.y = 78.5;
@@ -69,6 +69,10 @@ const materialM = [];
         if (obsatcleFlag == 2 || obsatcleFlag == 3) {
             this.obj.children[12].visible = true;
             this.obstacles.push(this.interface[0]);
+            if (obsatcleFlag == 3) {
+                this.obj.children[15].visible = true;
+                this.obstacles.push(this.interface[1]);
+            }
             /*obstacle = takeElement(memory, "Table");
             if (obstacle) {
                 obstacle.available = false;
@@ -80,8 +84,8 @@ const materialM = [];
         if (obsatcleFlag == 4) {
             this.obj.children[13].visible = true;
             this.obj.children[14].visible = true;
-            this.obstacles.push(this.interface[1]);
             this.obstacles.push(this.interface[2]);
+            this.obstacles.push(this.interface[3]);
             /*obstacle = takeElement(memory, "Turnstile");
             if (obstacle) {
                 obstacle[0].available = false;
@@ -105,16 +109,17 @@ const materialM = [];
         }
         this.obj.children[11].visible = false;
         this.obj.children[12].visible = false;
-        if (this.interface[1].enabled) {
-            this.interface[1].rotation1.rotation.y = 0;
-            this.interface[1].rotation2.rotation.y = 0;
-        }
-        else {
+        if (this.interface[2].enabled) {
             this.interface[2].rotation1.rotation.y = 0;
             this.interface[2].rotation2.rotation.y = 0;
         }
+        else {
+            this.interface[3].rotation1.rotation.y = 0;
+            this.interface[3].rotation2.rotation.y = 0;
+        }
         this.obj.children[13].visible = false;
         this.obj.children[14].visible = false;
+        this.obj.children[15].visible = false;
         this.toDispose = [];
         this.elements = [];
         this.obstacles = [];
@@ -277,7 +282,13 @@ function createCeil(height, geometry, material) {
     turnstile[0].obj.visible = false;
     turnstile[1].obj.visible = false;
 
-    const ret = new Room(obj, widthWall, heightWall, depthWall, [table, turnstile[0], turnstile[1]]);
+    const computer = obstaclesCreate("Computer");
+    obj.add(computer.obj);
+    computer.obj.position.y = table.obj.position.y + table.height / 2 + computer.height / 2;
+    computer.obj.position.z = computer.depth / 2;
+    computer.obj.visible = false;
+
+    const ret = new Room(obj, widthWall, heightWall, depthWall, [table, computer, turnstile[0], turnstile[1]]);
     return ret;
 }
 

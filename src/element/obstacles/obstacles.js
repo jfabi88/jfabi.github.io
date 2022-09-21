@@ -5,7 +5,7 @@
   if (type == "Table")
   {
     obstacle = createTable();
-    newScale(obstacle, [5, 3, 5]);
+    newScale(obstacle, [5, 2.5, 5]);
     obstacle.intersectionLimit[0] *= 3;
     obstacle.intersectionLimit[1] *= 3;
     obstacle.obj.position.y += obstacle.height / 2;
@@ -22,6 +22,12 @@
     obstacle2.obj.position.x = obstacle2.width / 2;
     obstacle2.obj.position.y = obstacle2.height / 2;
     obstacle.push(obstacle1, obstacle2);
+  }
+  else if (type == "Computer") {
+    obstacle = createComputer();
+    newScale(obstacle, [3.5, 3.5, 4.0]);
+    obstacle.obj.rotation.x = -Math.PI / 2;
+    obstacle.obj.position.y += obstacle.height / 2;
   }
   return obstacle;
 }

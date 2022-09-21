@@ -28,25 +28,35 @@ function onWindowResize(camera, window, renderer) {
 }
 
 function onKeyPress(key, mainScene) {
+    if (mainScene.start != 2)
+        return ; 
     if (key == "a" && mainScene.cat != null) {
         mainScene.catspeed = -50;
       }
     else if (key == "d" && mainScene.cat != null) {
         mainScene.catspeed = 50;
     }
-    else if (key == "t") {
+    else if (key == "q") {
         if (mainScene.room && mainScene.room.enabled && mainScene.room.canRotate(mainScene.cat)) {
             rotationCamera(mainScene, -Math.PI / 2);
         }
     }
-    else if (key == "y") {
+    else if (key == "e") {
         if (mainScene.room && mainScene.room.enabled && mainScene.room.canRotate(mainScene.cat)) {
             rotationCamera(mainScene, Math.PI / 2);
         }
     }
-    else if (key == "p") {
-        if (mainScene.pause == true) mainScene.pause = false;
-        else mainScene.pause = true;
+    else if (key == " ") {
+        if (mainScene.pause == true && mainScene.died == false) {
+            const elem = document.getElementById("pressStart");
+            elem.style.visibility = "hidden";
+            mainScene.pause = false;
+        }
+        else {
+            const elem = document.getElementById("pressStart");
+            elem.style.visibility = "visible";
+            mainScene.pause = true;
+        }
     }
     else if (key == "w" && mainScene.cat != null) {
         mainScene.cat.playAnimation("jump", false);
@@ -56,7 +66,8 @@ function onKeyPress(key, mainScene) {
     }
 }
 
- function setControl(document, window, renderer, scene)
+
+function setControl(document, window, renderer, scene)
 {
     document.addEventListener('keypress', (e) => {
         onKeyPress(e.key, scene);
