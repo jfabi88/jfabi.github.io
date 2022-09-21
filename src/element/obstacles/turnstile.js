@@ -1,7 +1,3 @@
-import * as THREE from 'three';
-import { createGeometryCube, createMesh } from '../../utils/utils.js';
-
-import { Element } from '../element.js';
 
 var turnstileTexture = [];
 
@@ -72,7 +68,7 @@ class Turnstile extends Element {
     }
 }
 
-export function loadTurnStileTexture(loader) {
+ function loadTurnStileTexture(loader) {
     const texture1 = loader.load("src/element/texture/redTurn.png");
     const texture2 = loader.load("src/element/texture/greenTurn.png");
 
@@ -250,7 +246,7 @@ function createHalfTurnstile(texture, light) {
     return obj;
 }
 
-export function createTurnstile(flag) {
+ function createTurnstile(flag) {
     const obj = new THREE.Object3D();
 
     const leftTurn = createHalfTurnstileOptimazed(turnstileTexture[+flag], flag);

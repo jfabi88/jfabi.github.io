@@ -1,11 +1,7 @@
-import * as THREE from 'three';
-
-import { createJumpAnimation, createSlipAnimation } from './animation.js';
-import { createCube } from '../../utils/utils.js';
 
 var catTexture = [];
 
-export function loadCatTexture(loader) {
+ function loadCatTexture(loader) {
   catTexture = [
     new THREE.MeshPhongMaterial({
       map: loader.load("src/element/cat/texture/lateralBody.png"),
@@ -25,7 +21,7 @@ export function loadCatTexture(loader) {
   ];
 }
 
-export function setRayCaster(cat, rayCaster) {
+ function setRayCaster(cat, rayCaster) {
   const vector = new THREE.Vector3();
 
   vector.x = cat.obj.position.x;
@@ -162,7 +158,7 @@ function createTail(width, height, depth, texture) {
   return tailMesh;
 }
 
-export function createCat() {
+ function createCat() {
   var headW = 10;
   var headH = 8;
   var headD = 8;

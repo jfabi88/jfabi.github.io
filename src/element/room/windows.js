@@ -1,21 +1,19 @@
-import * as THREE from 'three';
 
-import { createGeometryPlane, createMesh, createPlane } from '../../utils/utils.js';
 
 /* Window Matrix
     0 Edge
     1 Glass
 */
 
-const geometryM = [];
-const materialM = [];
+const geometryMatrix = [];
+const materialMatrix = [];
 
 var width = 25;
 var height = 50;
 var depth = 2;
 var shift = 1.5;
 
-export function createGeometryExternalWindow(w, h, d, s) {
+ function createGeometryExternalWindow(w, h, d, s) {
     const vertices = [
         //face 1
         {pos: [-w/2, -h/2, d/2], norm: [0, 0, 1], uv: [0, 0]}, // 1             //0
@@ -97,9 +95,9 @@ export function createGeometryExternalWindow(w, h, d, s) {
     return geometry;
 }
 
-export function createObjWindowInstance(count) {
-    const instancedEdge = new THREE.InstancedMesh(geometryM[0], materialM[0], count);
-    const instancedGlass = new THREE.InstancedMesh(geometryM[1], materialM[1], count);
+ function createObjWindowInstance(count) {
+    const instancedEdge = new THREE.InstancedMesh(geometryMatrix[0], materialMatrix[0], count);
+    const instancedGlass = new THREE.InstancedMesh(geometryMatrix[1], materialMatrix[1], count);
 
     const matrix = new THREE.Matrix4();
     matrix.setPosition(0, 0, -depth/2);
@@ -109,9 +107,9 @@ export function createObjWindowInstance(count) {
     return ([instancedEdge, instancedGlass]);
 }
 
-export function createObjectWindow() {
-    const meshEdge = new THREE.Mesh(geometryM[0], materialM[0]);
-    const meshGlass = new THREE.Mesh(geometryM[1], materialM[1]);
+ function createObjectWindow() {
+    const meshEdge = new THREE.Mesh(geometryMatrix[0], materialMatrix[0]);
+    const meshGlass = new THREE.Mesh(geometryMatrix[1], materialMatrix[1]);
 
     meshGlass.position.z = -depth / 2;
 
@@ -120,18 +118,18 @@ export function createObjectWindow() {
     return meshEdge;
 }
 
-export function createGeoMatWindow(w = width, h = height, d = depth, s = shift) {
+ function createGeoMatWindow(w = width, h = height, d = depth, s = shift) {
     width = w;
     height = h;
     depth = d;
     shift = s;
 
-    geometryM.length = 0;
+    geometryMatrix.length = 0;
 
     const geometryEdge = createGeometryExternalWindow(w, h, d, s);
     const geometryGlass = createGeometryPlane(width - shift, height - shift);
 
-    if (materialM.length == 0) {
+    if (materialMatrix.length == 0) {
         const materialEdge = new THREE.MeshPhongMaterial({
             color: 0x000000,
         });
@@ -141,15 +139,15 @@ export function createGeoMatWindow(w = width, h = height, d = depth, s = shift) 
             transparent: true,
             side: THREE.DoubleSide,
         });
-        materialM.push(materialEdge);
-        materialM.push(materialGlass);
+        materialMatrix.push(materialEdge);
+        materialMatrix.push(materialGlass);
     }
 
-    geometryM.push(geometryEdge);
-    geometryM.push(geometryGlass);
+    geometryMatrix.push(geometryEdge);
+    geometryMatrix.push(geometryGlass);
 }
 
-export function createWindowOptimized(w, h, d, s = 0.5) {               //deprecated
+ function createWindowOptimized(w, h, d, s = 0.5) {               //deprecated
     const externalGeometry = createGeometryExternalWindow(w, h, d, s);
     const planeGeometry = createGeometryPlane();
     
@@ -173,7 +171,7 @@ export function createWindowOptimized(w, h, d, s = 0.5) {               //deprec
     return meshWindow;
 }
 
-export function createWindow(width, height, depth, shift = 0.5)         //inutilizzata
+ function createWindow(width, height, depth, shift = 0.5)         //inutilizzata
 {
     const ret = new THREE.Object3D();
 

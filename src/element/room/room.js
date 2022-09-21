@@ -1,15 +1,5 @@
-import * as THREE from 'three';
 
-import {getRandomInt} from "../../utils/utils.js";
-import { placeObj } from '../../utils/utils.js';
-import { createCeilingLamp, createCeilingLampOptimized } from '../decoration/ceilingLight.js';
-import {Element} from "../element.js";
-import { obstaclesCreate } from '../obstacles/obstacles.js';
-import { createTable } from '../obstacles/table.js';
-import { getConnectionPoints, connect } from './utils.js';
-import { createGeoMatWallWindows, createObjectWallWindows } from './wallWindow.js';
-
-export var roomTexture;
+ var roomTexture;
 
 var widthWall = 80;
 var heightWall = 80;
@@ -28,7 +18,7 @@ var shiftWindow = 1.5;
 const geometryM = [];
 const materialM = [];
 
-export class Room extends Element {
+ class Room extends Element {
     enabled =  false;
     obstacles = [];
     elements = [];
@@ -131,7 +121,7 @@ export class Room extends Element {
     };
 }
 
-export function loadRoomTexture(loader) {
+ function loadRoomTexture(loader) {
 
     const texture2 = loader.load("src/element/texture/wallTexture4.png");
     const texture3 = loader.load("src/element/texture/wallTextureNormal3.png");
@@ -177,7 +167,7 @@ function createCeil(height, geometry, material) {
     return mesh;
 }
 
-export function createObjRoomInstance(count) {
+ function createObjRoomInstance(count) {
     const instanceWallWindowDx = createObjectWallWindows(count);
     const instanceWallDx = new THREE.InstancedMesh(geometryM[0], materialM[0], count);
     const instanceWallSx = new THREE.InstancedMesh(geometryM[0], materialM[1], count);
@@ -231,7 +221,7 @@ export function createObjRoomInstance(count) {
     return ([instanceWallWindowDx[0], instanceWallWindowDx[1], instanceWallWindowDx[2], instanceWallDx, instanceWallSx, instanceFloor, instanceCeil]);
 }
 
-export function createObjectRoom() {
+ function createObjectRoom() {
     const obj = new THREE.Object3D();
 
     const flag = getRandomInt(2);
@@ -291,7 +281,7 @@ export function createObjectRoom() {
     return ret;
 }
 
-export function createGeoMatRoom(wW = widthWall, hW = heightWall, dW = depthWall, wWind = widthWindow, hWind = heightWindow, dWind = depthWindow, s = shiftWindow) {
+ function createGeoMatRoom(wW = widthWall, hW = heightWall, dW = depthWall, wWind = widthWindow, hWind = heightWindow, dWind = depthWindow, s = shiftWindow) {
 
     widthWall = wW;
     heightWall = hW;

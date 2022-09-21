@@ -1,8 +1,5 @@
-import {createTable} from "./table.js";
-import {createTurnstile} from "./turnstile.js";
-import {getRandomInt, newScale} from "../../utils/utils.js";
 
-export function obstaclesCreate(type) {
+ function obstaclesCreate(type) {
   var obstacle;
 
   if (type == "Table")

@@ -1,7 +1,3 @@
-import * as THREE from 'three';
-import { componeGeometry, createGeometryOctagon, createMesh } from '../../utils/utils.js';
-
-import {Element} from "../element.js";
 
 class DecorationLight extends Element {
   constructor (obj) {
@@ -105,7 +101,7 @@ function createBordLampGeometry(w, h, d, s) {
   return componeGeometry(vertices, index);
 }
 
-export function createCeilingLampOptimized(w, h, d, s = 0.5) {
+ function createCeilingLampOptimized(w, h, d, s = 0.5) {
   const obj = new THREE.Object3D();
 
   const geometryExternal = createBordLampGeometry(w, h, d, s);
@@ -145,7 +141,7 @@ export function createCeilingLampOptimized(w, h, d, s = 0.5) {
   return new DecorationLight(obj);
 }
 
-export function createCeilingLamp(width, height, deep)
+ function createCeilingLamp(width, height, deep)
 {
     const obj = new THREE.Object3D();
 

@@ -1,9 +1,3 @@
-import * as THREE from 'three';
-
-import {Room} from "./room.js";
-import {createWall} from "./wallWindow.js";
-import {placeObj, getRandomInt} from "../../utils/utils.js";
-import {roomTexture} from "./room.js";
 
 class TransitionRoom extends Room {
     constructor(obj, w, h, d, type) {
@@ -58,7 +52,7 @@ function createDoorWall(width, height, depth)
     return wall;
 }
 
-export function createTransitionRoomLeftRight(width, height, depth) {
+ function createTransitionRoomLeftRight(width, height, depth) {
     const obj = new THREE.Object3D();
     const depthWall = 4;
 
@@ -145,7 +139,7 @@ export function createTransitionRoomLeftRight(width, height, depth) {
     return ret;
 }
 
-export function createTransitionRoomLeft(width, height, depth)
+ function createTransitionRoomLeft(width, height, depth)
 {
     const obj = new THREE.Object3D();
     const depthWall = 4;
@@ -226,7 +220,7 @@ export function createTransitionRoomLeft(width, height, depth)
     return ret;
 }
 
-export function createTransitionRoomRight(width, height, depth)
+ function createTransitionRoomRight(width, height, depth)
 {
     const obj = new THREE.Object3D();
     const depthWall = 4;
@@ -306,7 +300,7 @@ export function createTransitionRoomRight(width, height, depth)
     return ret;
 }
 
-export function createTransitionRoomBack(width, height, depth)
+ function createTransitionRoomBack(width, height, depth)
 {
     const obj = new THREE.Object3D();
 
@@ -389,7 +383,7 @@ export function createTransitionRoomBack(width, height, depth)
     return ret;
 }
 
-export function createTransitionRoom(memory)
+ function createTransitionRoom(memory)
 {
     const randomInt = getRandomInt(4);
     var ret;

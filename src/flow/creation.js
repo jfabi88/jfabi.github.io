@@ -1,13 +1,5 @@
-import * as THREE from 'three';
 
-import {createTransitionRoomBack, createTransitionRoomLeft, createTransitionRoomLeftRight, createTransitionRoomRight} from "../element/room/transitionRoom.js"
-import {obstaclesCreate} from "../element/obstacles/obstacles.js";
-import { createCeilingLamp, createCeilingLampOptimized } from '../element/decoration/ceilingLight.js';
-import { createWall } from '../element/room/wallWindow.js';
-import { createGeoMatRoom, createObjectRoom } from '../element/room/room.js';
-import { setFlag } from './update.js';
-
-export function createAllObject(mainScene, roomA, obstacleA, decorationA) {
+ function createAllObject(mainScene, roomA, obstacleA, decorationA) {
     const width = mainScene.widthRoom;
     const height = mainScene.heightRoom;
     const depth = mainScene.depthRoom;
@@ -51,7 +43,7 @@ export function createAllObject(mainScene, roomA, obstacleA, decorationA) {
     }*/
 }
 
-export function reset(mainScene, memory) {
+ function reset(mainScene, memory) {
     const room = memory.roomA[19];
     const conPoint = room.getConnectionPoints()[0];
     for (var i = 0; i < 20; i++) {
@@ -78,7 +70,7 @@ export function reset(mainScene, memory) {
     setFlag(true);
 }
 
-export function createWay(mainScene, memory) {
+ function createWay(mainScene, memory) {
     
     var room;
 

@@ -1,14 +1,8 @@
-import * as THREE from 'three';
 
-import { createWall, createWallWindows } from "./wallWindow.js";
-import {getRandomInt} from "../../utils/utils.js";
-import { placeObj } from '../../utils/utils.js';
-import {Element} from "../element.js";
-import { getConnectionPoints, connect } from './utils.js';
 
-export var roomTexture;
+ var roomTexture;
 
-export class Room extends Element {
+ class Room extends Element {
     enabled =  false;
     obstacles = [];
     elements = [];
@@ -90,7 +84,7 @@ export class Room extends Element {
     };
 }
 
-export function loadRoomTexture(loader) {
+ function loadRoomTexture(loader) {
     //const texture1 = loader.load("element/texture/woodTexture.jpeg");
     //texture1.wrapS = THREE.RepeatWrapping;
     //texture1.wrapT = THREE.RepeatWrapping;
@@ -175,7 +169,7 @@ function createCeil(width, height, depth) {
     return ceil;
 }
 
-export function createRoom(width, height, depth)
+ function createRoom(width, height, depth)
 {
     const obj = new THREE.Object3D();
 

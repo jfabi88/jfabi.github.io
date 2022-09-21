@@ -1,6 +1,5 @@
-import {Vector3} from 'three';
 
-export function checkIn(cat, tRoomA, wallsA) {
+ function checkIn(cat, tRoomA, wallsA) {
     for (var i = 0; i < tRoomA.length; i++) {
         const room = tRoomA[i];
         if (room.isIn(cat)) {
@@ -16,7 +15,7 @@ export function checkIn(cat, tRoomA, wallsA) {
     return null;
 }
 
-export function checkAnimation(obstaclesA, cat, group) {
+ function checkAnimation(obstaclesA, cat, group) {
     for (var i = 0; i < obstaclesA.length; i++) {
         if (obstaclesA[i].type == "Turnstile" && obstaclesA[i].enabled) {
             if (obstaclesA[i].checkToAnimate(cat)) {
@@ -26,10 +25,10 @@ export function checkAnimation(obstaclesA, cat, group) {
     }
 }
 
-export function checkIntersection(obstaclesA, cat) {
+ function checkIntersection(obstaclesA, cat) {
     const frontC = cat.obj.position.z - cat.depth / 2;
     const backC = cat.obj.position.z + cat.depth / 2;
-    const posO = new Vector3();
+    const posO = new THREE.Vector3();
     for (var i = 0; i < obstaclesA.length; i++) {
         obstaclesA[i].obj.getWorldPosition(posO);
         var frontO = posO.z - obstaclesA[i].depth / 2;

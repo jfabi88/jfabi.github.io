@@ -1,6 +1,5 @@
-import { Vector3 } from "three";
 
-export class Element {
+ class Element {
     obj = null;
     width = 0;
     height = 0;
@@ -20,7 +19,7 @@ export class Element {
         objDispose(this.obj);
     };
     getWorldPosition() {
-        const p = new Vector3();
+        const p = new THREE.Vector3();
         this.obj.getWorldPosition(p);
         return p;
     }

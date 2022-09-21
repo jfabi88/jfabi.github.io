@@ -1,12 +1,3 @@
-import * as THREE from 'three';
-import {loadCatTexture, createCat, setRayCaster} from "./element/cat/cat.js";
-import {loadRoomTexture} from "./element/room/room.js";
-import {loadTurnStileTexture} from "./element/obstacles/turnstile.js";
-import {createAllObject, createWay} from './flow/creation.js';
-import {updateScene} from './flow/update.js';
-import {checkIn, checkAnimation, checkIntersection} from './flow/check.js';
-import {setControl} from './flow/controlGame.js';
-
 
 function changePosition(position, catdirection, speed, limit) {
   position.addScaledVector(catdirection, speed);
@@ -24,7 +15,7 @@ function changePosition(position, catdirection, speed, limit) {
   //  position.z = limit[5];
 }
 
-export function main(cat, renderer) {
+ function main(cat, renderer) {
   var stats = new Stats();
   stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
   document.body.appendChild( stats.dom );

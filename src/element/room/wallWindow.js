@@ -1,6 +1,3 @@
-import * as THREE from 'three';
-
-import { createGeoMatWindow, createWindowOptimized, createObjWindowInstance } from "./windows.js";
 
 var geometry = [];
 var material = [];
@@ -10,7 +7,7 @@ var heightWindow = 50;
 var depthWindow = 2;
 var shiftWindow = 1.5;
 
-export function createWall(material, width, height) {
+ function createWall(material, width, height) {
   const geometryWall = new THREE.PlaneGeometry(width, height);
   const materialWall = material;
   const wall = new THREE.Mesh(geometryWall, materialWall);
@@ -57,7 +54,7 @@ function createGeometryWallHoles() {
     return geometryWall;
 }
 
-export function createObjectWallWindows(size = 1) {
+ function createObjectWallWindows(size = 1) {
 
     const instanced = createObjWindowInstance(4 * size);
   
@@ -108,7 +105,7 @@ export function createObjectWallWindows(size = 1) {
   
 }
 
-export function createGeoMatWallWindows(w = widthWindow, h = heightWindow, d = depthWindow, s = shiftWindow) {
+ function createGeoMatWallWindows(w = widthWindow, h = heightWindow, d = depthWindow, s = shiftWindow) {
     const geometryWall = createGeometryWallHoles();
     geometry.push(geometryWall);
 
@@ -121,7 +118,7 @@ export function createGeoMatWallWindows(w = widthWindow, h = heightWindow, d = d
     createGeoMatWindow(w, h, d, s);
 }
 
-export function createWallWindows() {             //deprecated
+ function createWallWindows() {             //deprecated
 
   const ret = new THREE.Object3D();
 

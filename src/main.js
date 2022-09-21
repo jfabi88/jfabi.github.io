@@ -1,11 +1,4 @@
 
-import { loadTurnStileTexture, createTurnstile } from "./element/obstacles/turnstile.js";
-import { Element } from "./element/element.js";
-import { createGeoMatWallWindows, createObjectWallWindows } from "./element/room/wallWindow.js";
-import { createGeoMatRoom, createObjectRoom, loadRoomTexture } from "./element/room/room.js";
-import { createTransitionRoom, createTransitionRoomBack } from "./element/room/transitionRoom.js";
-import { createGeoMatHallWay, createObjectHallWay } from "./element/room/hallway.js";
-
 init();
 
 function init() {

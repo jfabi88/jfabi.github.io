@@ -1,6 +1,5 @@
-import * as THREE from 'three';
 
-export function placeObj(obj, pos, rot, scale) {
+ function placeObj(obj, pos, rot, scale) {
     if (pos != null)
         obj.position.set(pos[0], pos[1], pos[2]);
     if (rot != null)
@@ -9,7 +8,7 @@ export function placeObj(obj, pos, rot, scale) {
         obj.scale.set(scale[0], scale[1], scale[0]);
 }
 
-export function disposeFromArray(scene, obj, array) {
+ function disposeFromArray(scene, obj, array) {
     for (var i = 0; i < array.length; i++) {
         if (array[i] == obj) {
           array.splice(i, 1);
@@ -20,7 +19,7 @@ export function disposeFromArray(scene, obj, array) {
     }
 }
 
-export function removeFromArray(scene, obj, array) {
+ function removeFromArray(scene, obj, array) {
     for (var i = 0; i < array.length; i++) {
         if (array[i] == obj) {
           array.splice(i, 1);
@@ -32,7 +31,7 @@ export function removeFromArray(scene, obj, array) {
     } 
 }
 
-export function objDispose(obj) {
+ function objDispose(obj) {
     obj.children.forEach((child) => {
         if (child.geometry != null)  //probabile che si possa levare
             child.geometry.dispose();
@@ -41,14 +40,14 @@ export function objDispose(obj) {
     });
   }
 
-export function newScale(obj, scale) {
+ function newScale(obj, scale) {
     obj.obj.scale.set(scale[0], scale[1], scale[2]);
     obj.width *= scale[0];
     obj.height *= scale[1];
     obj.depth *= scale[2];
 }
 
-export function componeGeometry(vertices, index) {
+ function componeGeometry(vertices, index) {
 
     const positions = [];
     const normals = [];
@@ -79,7 +78,7 @@ export function componeGeometry(vertices, index) {
     return geometry;
 }
 
-export function createGeometryOctagon() {
+ function createGeometryOctagon() {
     const vertices = [
         { pos: [0, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //0
         { pos: [0, 1, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //1
@@ -101,7 +100,7 @@ export function createGeometryOctagon() {
     return componeGeometry(vertices, index);
 }
 
-export function createGeometryPlane(width = 2, height = 2) {
+ function createGeometryPlane(width = 2, height = 2) {
     const vertices = [
         { pos: [-0.5 * width, -0.5 * height,  0], norm: [ 0,  0,  1], uv: [0, 1], }, // 0
         { pos: [ 0.5 * width, -0.5 * height,  0], norm: [ 0,  0,  1], uv: [1, 1], }, // 1
@@ -114,7 +113,7 @@ export function createGeometryPlane(width = 2, height = 2) {
     return componeGeometry(vertices, index);
 }
 
-export function createGeometryCube(face) {
+ function createGeometryCube(face) {
     const vertices = [];
     const index = [];
     var size = 0;
@@ -188,19 +187,19 @@ export function createGeometryCube(face) {
     return componeGeometry(vertices, index);
 }
 
-export function createMesh(geometry, material, width, height, depth) {
+ function createMesh(geometry, material, width, height, depth) {
     const objMesh = new THREE.Mesh(geometry, material);
     objMesh.scale.set(width / 2, height / 2, depth / 2);
     return objMesh;
 }
 
-export function createCube(width, height, depth, material) {
+ function createCube(width, height, depth, material) {
     const cubeGeometry = new THREE.BoxGeometry(width, height, depth);
     const cubeMesh = new THREE.Mesh(cubeGeometry, material);
     return cubeMesh;
 }
 
-export function createPlane(width, height, material) {
+ function createPlane(width, height, material) {
     const planeGeometry = new THREE.PlaneGeometry(width, height);
     const planeMesh = new THREE.Mesh(planeGeometry, material);
     return planeMesh;
@@ -219,7 +218,7 @@ function rotateOnPointV2(obj, point, axis, angle) {
     obj.rotateOnAxis(axis, angle);
 }
 
-export function rotateOnPoint(obj, point, axis, angle) {
+ function rotateOnPoint(obj, point, axis, angle) {
     var newObj = obj.clone();
     newObj.position.sub(point);
     newObj.position.applyAxisAngle(axis, angle);
@@ -228,6 +227,6 @@ export function rotateOnPoint(obj, point, axis, angle) {
     return ([newObj.position, newObj.quaternion]);
 }
 
-export function getRandomInt(max) {
+ function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }

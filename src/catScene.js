@@ -1,12 +1,3 @@
-import * as THREE from 'three';
-
-import { loadCatTexture, createCat } from "./element/cat/cat.js";
-import {loadRoomTexture} from "./element/room/room.js";
-import {loadTurnStileTexture} from "./element/obstacles/turnstile.js";
-import {createAllObject, createWay, reset} from './flow/creation.js';
-import {updateScene} from './flow/update.js';
-import {checkIn, checkAnimation, checkIntersection} from './flow/check.js';
-import {setControl} from './flow/controlGame.js';
 
 //addEventListener('DOMContentLoaded', (event) => {init();});
 
@@ -222,10 +213,13 @@ function init() {
         }
     };
 
+    var score = document.getElementById("score");
+
     document.getElementById("restart").onclick = function () {
         const menu = document.getElementById("menu");
         menu.style.visibility = "hidden";
         reset(mainScene, memory);
+        score.textContent = 0;
         createWay(mainScene, memory);
     }
 
@@ -233,7 +227,6 @@ function init() {
     var delta = 0;
     var catdirection = new THREE.Vector3(1, 0, 0);
 
-    var score = document.getElementById("score");
     function render() {
         if (scene == scene2) {
             delta = clock.getDelta(); //deve stare fuori dalla pausa

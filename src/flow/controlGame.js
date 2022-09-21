@@ -1,5 +1,4 @@
 
-import {createRotationAnimationTween} from './animation.js';
 
 function rotationCamera(mainScene, angle) {
     mainScene.pause = true;
@@ -57,7 +56,7 @@ function onKeyPress(key, mainScene) {
     }
 }
 
-export function setControl(document, window, renderer, scene)
+ function setControl(document, window, renderer, scene)
 {
     document.addEventListener('keypress', (e) => {
         onKeyPress(e.key, scene);

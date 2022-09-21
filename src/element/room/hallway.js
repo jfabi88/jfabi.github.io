@@ -1,7 +1,3 @@
-import * as THREE from 'three';
-
-import { createGeoMatRoom, createObjectRoom, createObjRoomInstance } from './room.js';
-import { Element } from '../element.js';
 
 var widthWall = 80;
 var heightWall = 80;
@@ -13,7 +9,7 @@ var shiftWindow = 1.5;
 
 const matrixRoom = [];
 
-export function createObjectHallWay() {
+ function createObjectHallWay() {
 
     const count = 6;
     const obj = new THREE.Object3D();
@@ -50,6 +46,6 @@ export function createObjectHallWay() {
     return new Element(obj, widthWall, heightWall, depthWall * 6);
 }
 
-export function createGeoMatHallWay(wW = widthWall, hW = heightWall, dW = depthWall, wWind = widthWindow, hWind = heightWindow, dWind = depthWindow, s = shiftWindow) {
+ function createGeoMatHallWay(wW = widthWall, hW = heightWall, dW = depthWall, wWind = widthWindow, hWind = heightWindow, dWind = depthWindow, s = shiftWindow) {
     createGeoMatRoom(wW, hW, dW, wWind, hWind, dWind, s);
 }

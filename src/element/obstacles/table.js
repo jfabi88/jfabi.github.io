@@ -1,7 +1,3 @@
-import * as THREE from 'three';
-
-import {Element} from "../element.js";
-import {createCube, objDispose, createGeometryCube, createMesh} from "../../utils/utils.js";
 
 class Table extends Element {
     intersectionLimit = [];
@@ -40,7 +36,7 @@ function intersectionTable(table, cat)
     return 0;
 }
 
-export function createTable()
+ function createTable()
 {
     const legW = 1.0;
     const legH = 5.0;

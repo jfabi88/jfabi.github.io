@@ -1,6 +1,3 @@
-import {Vector3} from 'three';
-
-import {takeNormal, dot, vectProd} from '../../utils/mathUtils.js';
 
 function createConnectRooms(mainScene, obj) {
     mainScene.pause = true;
@@ -24,7 +21,7 @@ function createConnectRooms(mainScene, obj) {
     mainScene.pause = false;
 }
 
-export function connect(obj, array, orientation, depth) {
+ function connect(obj, array, orientation, depth) {
 
     var normal1 = takeNormal(array[0].toArray(), array[1].toArray(), array[2].toArray());
     var normal2 = takeNormal(orientation[0].toArray(), orientation[1].toArray(), orientation[2].toArray());
@@ -44,16 +41,16 @@ export function connect(obj, array, orientation, depth) {
     obj.rotateY(angle - Math.PI);
 }
 
-export function getConnectionPoints(obj, points) {
+ function getConnectionPoints(obj, points) {
     const ret = [];
     for (var i = 0; i < points.length; i += 3) {
         const array = [];
 
-        const p1 = new Vector3();
+        const p1 = new THREE.Vector3();
         obj.children[points[i]].getWorldPosition(p1);
-        const p2 = new Vector3();
+        const p2 = new THREE.Vector3();
         obj.children[points[i + 1]].getWorldPosition(p2);
-        const p3 = new Vector3();
+        const p3 = new THREE.Vector3();
         obj.children[points[i + 2]].getWorldPosition(p3);
     
         array.push(p1);

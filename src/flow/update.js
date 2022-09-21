@@ -1,11 +1,7 @@
-import {Vector3} from 'three';
-
-import { createTransitionRoom } from '../element/room/transitionRoom.js';
-import { removeFromArray } from '../utils/utils.js';
 
 var flag = true;
 
-export function setFlag(bool) {
+ function setFlag(bool) {
     flag = bool;
 }
 
@@ -46,13 +42,13 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     return(toRet);
 }
 
-export function updateScene(mainScene, memory, delta) {
+ function updateScene(mainScene, memory, delta) {
     //console.log(memory);
     //console.log(mainScene.wallsA);
     //console.log(mainScene.elementsA);
     var toMove = [];
     mainScene.wallsA.forEach(function (elem) {
-        elem.obj.position.addScaledVector(new Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
+        elem.obj.position.addScaledVector(new THREE.Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
         if (elem.obj.position.z > 120) {
             for (var i = 0; i < mainScene.lastObj.length; i++) {
                 if (mainScene.lastObj[i] == elem) {
@@ -66,7 +62,7 @@ export function updateScene(mainScene, memory, delta) {
         }
     })
     mainScene.elementsA.forEach(function (elem) {
-        elem.obj.position.addScaledVector(new Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
+        elem.obj.position.addScaledVector(new THREE.Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
         if (elem.obj.position.z > 120) {
             removeFromArray(mainScene.scene, elem, mainScene.elementsA);
             flag = true;
