@@ -4,9 +4,9 @@ function rotationCamera(mainScene, angle) {
     mainScene.pause = true;
     mainScene.room.enabled = false;
     const group = new TWEEN.Group();
-    createRotationAnimationTween(mainScene.wallsA, mainScene.room.obj, group, angle);
-    createRotationAnimationTween(mainScene.elementsA, mainScene.room.obj, group, angle);
-    createRotationAnimationTween(mainScene.obstaclesA, mainScene.room.obj, group, angle);
+    createAnimationTransitionRoomTween(mainScene.wallsA, mainScene.room.obj, group, angle);
+    createAnimationTransitionRoomTween(mainScene.elementsA, mainScene.room.obj, group, angle);
+    createAnimationTransitionRoomTween(mainScene.obstaclesA, mainScene.room.obj, group, angle);
     mainScene.room = null;
     const tween = new TWEEN.Tween(mainScene, group).onComplete(function () {
         mainScene.pause = false;

@@ -8,46 +8,23 @@
         obj.scale.set(scale[0], scale[1], scale[0]);
 }
 
- function disposeFromArray(scene, obj, array) {
+function removeFromArray(obj, array) {
     for (var i = 0; i < array.length; i++) {
         if (array[i] == obj) {
           array.splice(i, 1);
-          scene.remove(obj.obj);
-          obj.dispose();
-          break ;
-        }
-    }
-}
-
- function removeFromArray(scene, obj, array) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] == obj) {
-          array.splice(i, 1);
-          //obj.obj.visible = false;
-          //scene.remove(obj.obj);
-          //obj.available = true;
           break ;
         }
     } 
 }
 
- function objDispose(obj) {
-    obj.children.forEach((child) => {
-        if (child.geometry != null)  //probabile che si possa levare
-            child.geometry.dispose();
-        if (child.material != null)  //probabile che si possa levare
-            child.material.dispose();
-    });
-  }
-
- function newScale(obj, scale) {
+function newScale(obj, scale) {
     obj.obj.scale.set(scale[0], scale[1], scale[2]);
     obj.width *= scale[0];
     obj.height *= scale[1];
     obj.depth *= scale[2];
 }
 
- function componeGeometry(vertices, index) {
+function componeGeometry(vertices, index) {
 
     const positions = [];
     const normals = [];
@@ -78,17 +55,17 @@
     return geometry;
 }
 
- function createGeometryOctagon() {
+ function createGeometryOctagon(width = 2, height = 2, factor = 0.75) {
     const vertices = [
         { pos: [0, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //0
-        { pos: [0, 1, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //1
-        { pos: [-0.75, 0.75, 0], norm: [ 0, 0, 1], uv: [0, 1], },   //2 
-        { pos: [-1, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },         //3
-        { pos: [-0.75, -0.75, 0], norm: [ 0, 0, 1], uv: [0, 1], },  //4 
-        { pos: [0, -1, 0], norm: [ 0, 0, 1], uv: [0, 1], },         //5
-        { pos: [0.75, -0.75, 0], norm: [ 0, 0, 1], uv: [0, 1], },   //6 
-        { pos: [1, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //7
-        { pos: [0.75, 0.75, 0], norm: [ 0, 0, 1], uv: [0, 1], },    //8
+        { pos: [0, 0.5 * height, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //1
+        { pos: [-0.5 * width * factor, 0.5 * width * factor, 0], norm: [ 0, 0, 1], uv: [0, 1], },   //2 
+        { pos: [-0.5 * width, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },         //3
+        { pos: [-0.5 * width * factor, -0.5 * height * factor, 0], norm: [ 0, 0, 1], uv: [0, 1], },  //4 
+        { pos: [0, -0.5 * height, 0], norm: [ 0, 0, 1], uv: [0, 1], },         //5
+        { pos: [0.5 * width * factor, -0.5 * height * factor, 0], norm: [ 0, 0, 1], uv: [0, 1], },   //6 
+        { pos: [0.5 * width, 0, 0], norm: [ 0, 0, 1], uv: [0, 1], },          //7
+        { pos: [0.5 * width * factor, 0.5 * height * factor, 0], norm: [ 0, 0, 1], uv: [0, 1], },    //8
     ];
 
     const index = [];
@@ -187,12 +164,6 @@
     return componeGeometry(vertices, index);
 }
 
- function createMesh(geometry, material, width, height, depth) {
-    const objMesh = new THREE.Mesh(geometry, material);
-    objMesh.scale.set(width / 2, height / 2, depth / 2);
-    return objMesh;
-}
-
  function createCube(width, height, depth, material) {
     const cubeGeometry = new THREE.BoxGeometry(width, height, depth);
     const cubeMesh = new THREE.Mesh(cubeGeometry, material);
@@ -205,20 +176,7 @@
     return planeMesh;
 }
 
-//** To Remove *//
-function resumePosition(obj, startObj) {
-    obj.position.copy(startObj.position);
-    obj.rotation.copy(startObj.rotation);
-}
-
-function rotateOnPointV2(obj, point, axis, angle) {
-    obj.position.sub(point);
-    obj.position.applyAxisAngle(axis, angle);
-    obj.position.add(point);
-    obj.rotateOnAxis(axis, angle);
-}
-
- function rotateOnPoint(obj, point, axis, angle) {
+function rotateOnPoint(obj, point, axis, angle) {
     var newObj = obj.clone();
     newObj.position.sub(point);
     newObj.position.applyAxisAngle(axis, angle);
@@ -227,6 +185,6 @@ function rotateOnPointV2(obj, point, axis, angle) {
     return ([newObj.position, newObj.quaternion]);
 }
 
- function getRandomInt(max) {
+function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }

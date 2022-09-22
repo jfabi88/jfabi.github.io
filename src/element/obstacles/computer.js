@@ -1,5 +1,4 @@
 
-
 const computerTexture = [];
 
 class Computer extends Element {

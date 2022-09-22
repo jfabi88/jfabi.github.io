@@ -1,5 +1,5 @@
 
-class TransitionRoom extends Room {
+class TransitionRoom extends Block {
     constructor(obj, w, h, d, type) {
         super(obj, w, h, d, type);
         this.orientationPoints = [6, 7, 8];
@@ -16,77 +16,64 @@ class TransitionRoom extends Room {
             return true;
         return false;
     };
-    addRooms (mainScene) {
-        createConnectRooms(mainScene, this);
-    };
 }
 
-function createDoorWall(width, height, depth)
-{
-    //const ret = new THREE.Object3D();
 
-    const wallShape = new THREE.Shape()
-    .moveTo(-width / 2, -(height / 2), 0)
-    .lineTo(-25, -(height / 2), 0)
-    .lineTo(-25, 20, 0)
-    .lineTo(25, 20, 0)
-    .lineTo(25, -(height / 2), 0)
-    .lineTo(width / 2, -(height / 2), 0)
-    .lineTo(width / 2, height / 2, 0)
-    .lineTo(-width / 2, height / 2, 0)
+/*
+    BACK
+    LEFT-RIGHT
+    CEIL-FLOOR
+    DOOR
+*/
+const geometryTR = [];
 
-    const extrudeSettings = {
-        depth: depth,
-    };
-  
-    const geometry = new THREE.ExtrudeBufferGeometry(wallShape, extrudeSettings);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x252850,
+/*
+    BACK-LEFT-RIGHT
+    CEIL
+    FLOOR
+    DOOR-FRONT
+    DOOR-LEFT-RIGHT
+*/
+const materialTR = [];
+
+var widthTR;
+var heightTR;
+var depthTR;
+var depthWallTR;
+
+function createAnimationTransitionRoomTween(array, room, group, angle) {
+    var tween;
+    var newP;
+
+    array.forEach(element => {
+        tween = new TWEEN.Tween(element.obj, group);
+        newP = rotateOnPoint(element.obj, room.position, new THREE.Vector3(0, 1, 0), angle);
+        tween.to({position: newP[0], quaternion: newP[1]}, 100).start()
     });
-    const wall = new THREE.Mesh(geometry, material);
-
-    wall.position.z = -depth / 2;
-
-    //ret.add(wall);
-
-    return wall;
 }
 
- function createTransitionRoomLeftRight(width, height, depth) {
+function createTransitionRoomLeftRight(width, height, depth) {
+    
     const obj = new THREE.Object3D();
-    const depthWall = 4;
 
-    const frontWall = createDoorWall(width, height, depthWall);
+    const frontWall = new THREE.Mesh(geometryTR[3], materialTR[3]);
+    frontWall.position.z = -depthWallTR / 2;
+    const backWall = new THREE.Mesh(geometryTR[0], materialTR[0]);
 
-    const backWall = createWall(new THREE.MeshPhongMaterial({
-        color: "rgb(108, 108, 108)",
-    }),
-    width,
-    height);
+    const leftWall = new THREE.Mesh(geometryTR[4], materialTR[3]);
+    leftWall.position.z = -depthWallTR / 2;
+    const rightWall = new THREE.Mesh(geometryTR[4], materialTR[3]);
+    rightWall.position.z = -depthWallTR / 2;
 
-    const leftWall = createDoorWall(depth, height, depthWall);
-    const rightWall = createDoorWall(depth, height, depthWall);
-
-    const ceil = createWall(new THREE.MeshPhongMaterial({
-        color: "rgb(255, 255, 255)"
-    }),
-    width,
-    depth);
-
-    const floor = createWall(new THREE.MeshPhongMaterial({
-        map: roomTexture[2],
-        normalMap: roomTexture[3],
-    }),
-    width,
-    depth);
-
+    const ceil = new THREE.Mesh(geometryTR[2], materialTR[1]);
+    const floor = new THREE.Mesh(geometryTR[2], materialTR[2]);
     floor.scale.z = -1
 
-    placeObj(frontWall, [0, height / 2, (depth / 2) - (depthWall / 2)]);
-    placeObj(backWall, [0, height / 2, -(depth / 2)]);
-    placeObj(leftWall, [-(width / 2) - (depthWall / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(rightWall, [(width / 2) - (depthWall / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(ceil, [0, height, 0], [Math.PI / 2, 0, 0]);
+    placeObj(frontWall, [0, heightTR / 2, (depthTR / 2) - (depthWallTR / 2)]);
+    placeObj(backWall, [0, heightTR / 2, -(depthTR / 2)]);
+    placeObj(leftWall, [-(widthTR / 2) - (depthWallTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(rightWall, [(widthTR / 2) - (depthWallTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(ceil, [0, heightTR, 0], [Math.PI / 2, 0, 0]);
     placeObj(floor, [0, 0, 0], [Math.PI / 2, 0, 0]);
     
     obj.add(frontWall);         //0
@@ -112,9 +99,9 @@ function createDoorWall(width, height, depth)
     const cPoint2 = new THREE.Object3D();
     const cPoint3 = new THREE.Object3D();
 
-    cPoint1.position.set(-(width / 2), 0, 15);
-    cPoint2.position.set(-(width / 2), 0, 0);
-    cPoint3.position.set(-(width / 2), height, 0);
+    cPoint1.position.set(-(widthTR / 2), 0, 15);
+    cPoint2.position.set(-(widthTR / 2), 0, 0);
+    cPoint3.position.set(-(widthTR / 2), heightTR, 0);
 
     obj.add(cPoint1);           //9
     obj.add(cPoint2);           //10
@@ -124,63 +111,43 @@ function createDoorWall(width, height, depth)
     const cPoint22 = new THREE.Object3D();
     const cPoint32 = new THREE.Object3D();
 
-    cPoint12.position.set((width / 2), 0, -15);
-    cPoint22.position.set((width / 2), 0, 0);
-    cPoint32.position.set((width / 2), height, 0);
+    cPoint12.position.set((widthTR / 2), 0, -15);
+    cPoint22.position.set((widthTR / 2), 0, 0);
+    cPoint32.position.set((widthTR / 2), heightTR, 0);
 
     obj.add(cPoint12);           //12
     obj.add(cPoint22);           //13
     obj.add(cPoint32);           //14
 
-    const ret = new TransitionRoom(obj, width, height, depth, "TRL");
+    const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TRL");
     ret.enabled = true;
     ret.connectionPoints = [9, 10, 11, 12, 13, 14];
 
     return ret;
 }
 
- function createTransitionRoomLeft(width, height, depth)
+ function createTransitionRoomLeft()
 {
     const obj = new THREE.Object3D();
-    const depthWall = 4;
 
-    const frontWall = createDoorWall(width, height, depthWall);
+    const frontWall = new THREE.Mesh(geometryTR[3], materialTR[3]);
+    frontWall.position.z = - depthWallTR / 2;
+    const backWall = new THREE.Mesh(geometryTR[0], materialTR[0]);
 
-    const backWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        width,
-        height);
-
-    const leftWall = createDoorWall(depth, height, depthWall);
-
-    const rightWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        depth,
-        height);
+    const leftWall = new THREE.Mesh(geometryTR[4], materialTR[3]);
+    leftWall.position.z = - depthWallTR / 2;
+    const rightWall = new THREE.Mesh(geometryTR[1], materialTR[0]);
     rightWall.scale.z = -1;
 
-    const ceil = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(255, 255, 255)",
-        }),
-        width,
-        depth);
-    
-    const floor = createWall(new THREE.MeshPhongMaterial({
-            map: roomTexture[2],
-            normalMap: roomTexture[3],
-        }),
-        width,
-        depth);
-
+    const ceil = new THREE.Mesh(geometryTR[2], materialTR[1]);
+    const floor = new THREE.Mesh(geometryTR[2], materialTR[2]);
     floor.scale.z = -1;
 
-    placeObj(frontWall, [0, height / 2, (depth / 2) - (depthWall / 2)]);
-    placeObj(backWall, [0, height / 2, -(depth / 2)]);
-    placeObj(leftWall, [-(width / 2) - (depthWall / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(rightWall, [(width / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(ceil, [0, height, 0], [Math.PI / 2, 0, 0]);
+    placeObj(frontWall, [0, heightTR / 2, (depthTR / 2) - (depthWallTR / 2)]);
+    placeObj(backWall, [0, heightTR / 2, -(depthTR / 2)]);
+    placeObj(leftWall, [-(widthTR / 2) - (depthWallTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(rightWall, [(widthTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(ceil, [0, heightTR, 0], [Math.PI / 2, 0, 0]);
     placeObj(floor, [0, 0, 0], [Math.PI / 2, 0, 0]);
     
     obj.add(frontWall);         //0
@@ -206,61 +173,41 @@ function createDoorWall(width, height, depth)
     const cPoint2 = new THREE.Object3D();
     const cPoint3 = new THREE.Object3D();
 
-    cPoint1.position.set(-(width / 2), 0, 15);
-    cPoint2.position.set(-(width / 2), 0, 0);
-    cPoint3.position.set(-(width / 2), height, 0);
+    cPoint1.position.set(-(widthTR / 2), 0, 15);
+    cPoint2.position.set(-(widthTR / 2), 0, 0);
+    cPoint3.position.set(-(widthTR / 2), heightTR, 0);
 
     obj.add(cPoint1);           //9
     obj.add(cPoint2);           //10
     obj.add(cPoint3);           //11
     
-    const ret = new TransitionRoom(obj, width, height, depth, "TL");
+    const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TL");
     ret.enabled = true;
     
     return ret;
 }
 
- function createTransitionRoomRight(width, height, depth)
+ function createTransitionRoomRight()
 {
     const obj = new THREE.Object3D();
-    const depthWall = 4;
 
-    const frontWall = createDoorWall(width, height, depthWall);
+    const frontWall = new THREE.Mesh(geometryTR[3], materialTR[3]);
+    frontWall.position.z = -depthWallTR / 2;
+    const backWall = new THREE.Mesh(geometryTR[0], materialTR[0]);
 
-    const backWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        width,
-        height);
+    const leftWall = new THREE.Mesh(geometryTR[1], materialTR[0]);
+    const rightWall = new THREE.Mesh(geometryTR[4], materialTR[3]);
+    rightWall.position.z = -depthWallTR / 2;
 
-    const leftWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        depth,
-        height);
-
-    const rightWall = createDoorWall(depth, height, depthWall);
-
-    const ceil = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(255, 255, 255)",
-        }),
-        width,
-        depth);
-    
-    const floor = createWall(new THREE.MeshPhongMaterial({
-            map: roomTexture[2],
-            normalMap: roomTexture[3],
-        }),
-        width,
-        depth);
-
+    const ceil = new THREE.Mesh(geometryTR[2], materialTR[1]);
+    const floor = new THREE.Mesh(geometryTR[2], materialTR[2]);
     floor.scale.z = -1;
 
-    placeObj(frontWall, [0, height / 2, (depth / 2) - (depthWall / 2)]);
-    placeObj(backWall, [0, height / 2, -(depth / 2)]);
-    placeObj(leftWall, [-(width / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(rightWall, [(width / 2) - (depthWall / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(ceil, [0, height, 0], [Math.PI / 2, 0, 0]);
+    placeObj(frontWall, [0, heightTR / 2, (depthTR / 2) - (depthWallTR / 2)]);
+    placeObj(backWall, [0, heightTR / 2, -(depthTR / 2)]);
+    placeObj(leftWall, [-(widthTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(rightWall, [(widthTR / 2) - (depthWallTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(ceil, [0, heightTR, 0], [Math.PI / 2, 0, 0]);
     placeObj(floor, [0, 0, 0], [Math.PI / 2, 0, 0]);
     
     obj.add(frontWall);         //0
@@ -286,65 +233,42 @@ function createDoorWall(width, height, depth)
     const cPoint2 = new THREE.Object3D();
     const cPoint3 = new THREE.Object3D();
 
-    cPoint1.position.set(width / 2, 0, -15);
-    cPoint2.position.set(width / 2, 0, 0);
-    cPoint3.position.set(width / 2, height, 0);
+    cPoint1.position.set(widthTR / 2, 0, -15);
+    cPoint2.position.set(widthTR / 2, 0, 0);
+    cPoint3.position.set(widthTR / 2, heightTR, 0);
 
     obj.add(cPoint1);           //9
     obj.add(cPoint2);           //10
     obj.add(cPoint3);           //11
 
-    const ret = new TransitionRoom(obj, width, height, depth, "TR");
+    const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TR");
     ret.enabled = true;
     
     return ret;
 }
 
- function createTransitionRoomBack(width, height, depth)
-{
+ function createTransitionRoomBack() {
+    
     const obj = new THREE.Object3D();
 
-    const depthWall = 4;
+    const frontWall = new THREE.Mesh(geometryTR[3], materialTR[3]);
+    const backWall = new THREE.Mesh(geometryTR[3], materialTR[3]);
+    frontWall.position.z = -depthWallTR / 2;
+    backWall.position.z = -depthWallTR / 2;
 
-    const frontWall = createDoorWall(width, height, depthWall);
-    const backWall = createDoorWall(width, height, depthWall);
-
-    const leftWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        depth,
-        height
-        );
-
-    const rightWall = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(108, 108, 108)",
-        }),
-        depth,
-        height
-    );
-
+    const leftWall = new THREE.Mesh(geometryTR[1], materialTR[0]);
+    const rightWall = new THREE.Mesh(geometryTR[1], materialTR[0]);
     rightWall.scale.z = -1;
 
-    const ceil = createWall(new THREE.MeshPhongMaterial({
-            color: "rgb(255, 255, 255)",
-        }),
-        width,
-        depth);
-
-    const floor = createWall(new THREE.MeshPhongMaterial({
-            map: roomTexture[2],
-            normalMap: roomTexture[3],
-        }),
-        width,
-        depth);
-
+    const ceil = new THREE.Mesh(geometryTR[2], materialTR[1]);
+    const floor = new THREE.Mesh(geometryTR[2], materialTR[2]);
     floor.scale.z = -1;
 
-    placeObj(frontWall, [0, height / 2, (depth / 2) - (depthWall / 2)]);
-    placeObj(backWall, [0, height / 2, -(depth / 2) + (depthWall / 2)]);
-    placeObj(leftWall, [-(height / 2), height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(rightWall, [width / 2, height / 2, 0], [0, Math.PI / 2, 0]);
-    placeObj(ceil, [0, height, 0], [Math.PI / 2, 0, 0]);
+    placeObj(frontWall, [0, heightTR / 2, (depthTR / 2) - (depthWallTR / 2)]);
+    placeObj(backWall, [0, heightTR / 2, -(depthTR / 2) + (depthWallTR / 2)]);
+    placeObj(leftWall, [-(heightTR / 2), heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(rightWall, [widthTR / 2, heightTR / 2, 0], [0, Math.PI / 2, 0]);
+    placeObj(ceil, [0, heightTR, 0], [Math.PI / 2, 0, 0]);
     placeObj(floor, [0, 0, 0], [Math.PI / 2, 0, 0]);
 
     obj.add(frontWall);     //0
@@ -370,22 +294,72 @@ function createDoorWall(width, height, depth)
     const cPoint2 = new THREE.Object3D();
     const cPoint3 = new THREE.Object3D();
 
-    cPoint1.position.set(-width / 2, 0, -depth / 2);
-    cPoint2.position.set(0, 0, -depth / 2);
-    cPoint3.position.set(0, height, -depth / 2);
+    cPoint1.position.set(-widthTR / 2, 0, -depthTR / 2);
+    cPoint2.position.set(0, 0, -depthTR / 2);
+    cPoint3.position.set(0, heightTR, -depthTR / 2);
 
     obj.add(cPoint1);       //9
     obj.add(cPoint2);       //10
     obj.add(cPoint3);       //11
 
-    const ret = new TransitionRoom(obj, width, height, depth, "TB");
+    const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TB");
 
     return ret;
 }
 
- function createTransitionRoom(memory)
+function createGeoMatTransitionRoom(width, height, depth, depthWall) {
+    
+    widthTR = width;
+    heightTR = height;
+    depthTR = depth;
+    depthWallTR = depthWall;
+
+    geometryTR.length = 0;
+
+    const geometryBackWall = new THREE.PlaneGeometry(width, height);
+    const geometryLeftRightWall = new THREE.PlaneGeometry(depth, height);
+    const geometryFloorCeil = new THREE.PlaneGeometry(width, depth);
+    const geometryDoorFrontWall = createDoorWallGeometry(width, height, depthWall);
+    const geometryDoorLeftRightWall = createDoorWallGeometry(depth, height, depthWall);
+
+    geometryTR.push(geometryBackWall, geometryLeftRightWall, geometryFloorCeil, geometryDoorFrontWall, geometryDoorLeftRightWall);
+
+    if (materialTR.length == 0) {
+        const materialBackLeftRightWall = new THREE.MeshPhongMaterial({color: "rgb(108, 108, 108)"});
+        const materialCeil = new THREE.MeshPhongMaterial({ color: "rgb(255, 255, 255)"});
+        const materialFloor = new THREE.MeshPhongMaterial({
+            map: roomTexture[2],
+            normalMap: roomTexture[3],
+        });
+        const materialDoorWall = new THREE.MeshPhongMaterial({ color: 0x252850 });
+
+        materialTR.push(materialBackLeftRightWall, materialCeil, materialFloor, materialDoorWall);
+    }
+}
+
+function createDoorWallGeometry(width, height, depth) {
+    const wallShape = new THREE.Shape()
+    .moveTo(-width / 2, -(height / 2), 0)
+    .lineTo(-25, -(height / 2), 0)
+    .lineTo(-25, 20, 0)
+    .lineTo(25, 20, 0)
+    .lineTo(25, -(height / 2), 0)
+    .lineTo(width / 2, -(height / 2), 0)
+    .lineTo(width / 2, height / 2, 0)
+    .lineTo(-width / 2, height / 2, 0)
+
+    const extrudeSettings = {
+        depth: depth,
+    };
+  
+    const geometry = new THREE.ExtrudeBufferGeometry(wallShape, extrudeSettings);
+
+    return geometry;
+}
+
+function createTransitionRoom(memory)
 {
-    const randomInt = getRandomInt(4);
+    const randomInt = getRandomInt(3);
     var ret;
 
     if (randomInt == 0)

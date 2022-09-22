@@ -22,7 +22,7 @@ function addRoom(memory, lastObj, wallsA, decorationA, spawn) {
         for (var j = 0; j < conPoiA.length; j++) {
             wall = takeElement(memory, "Room");
             wall.available = false;
-            elem = wall.populate(memory, countSpawn, spawn, (4 - spawn) * 2);
+            elem = wall.populate(countSpawn, spawn, (4 - spawn) * 2);
             if (countSpawn == spawn)
                 countSpawn = 1;
             else
@@ -86,7 +86,7 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     mainScene.elementsA.forEach(function (elem) {
         elem.obj.position.addScaledVector(new THREE.Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
         if (elem.obj.position.z > 120) {
-            removeFromArray(mainScene.scene, elem, mainScene.elementsA);
+            removeFromArray(elem, mainScene.elementsA);
             elem.obj.visible = false;
             elem.available = true;
             flag = true;
@@ -95,7 +95,7 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     mainScene.decorationA.forEach(function (elem) {
         elem.obj.position.addScaledVector(new THREE.Vector3(0, 0, 1), mainScene.ambientSpeed * delta);
         if (elem.obj.position.z > 120) {
-            removeFromArray(mainScene.scene, elem, mainScene.decorationA);
+            removeFromArray(elem, mainScene.decorationA);
             elem.obj.position.z = -400;
             elem.obj.position.x = -200;
             elem.available = true;
@@ -103,7 +103,7 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     });
     toMove.forEach(function (elem) {
         elem.empty();
-        removeFromArray(mainScene.scene, elem, mainScene.wallsA);
+        removeFromArray(elem, mainScene.wallsA);
         elem.obj.visible = false;
         elem.available = true;
         if (mainScene.wallsA.length <= (6 * mainScene.lastObj.length)) {

@@ -5,8 +5,8 @@
     1 Glass
 */
 
-const geometryMatrix = [];
-const materialMatrix = [];
+const geometryWindow = [];
+const materialWindow = [];
 
 var width = 25;
 var height = 50;
@@ -96,8 +96,8 @@ var shift = 1.5;
 }
 
  function createObjWindowInstance(count) {
-    const instancedEdge = new THREE.InstancedMesh(geometryMatrix[0], materialMatrix[0], count);
-    const instancedGlass = new THREE.InstancedMesh(geometryMatrix[1], materialMatrix[1], count);
+    const instancedEdge = new THREE.InstancedMesh(geometryWindow[0], materialWindow[0], count);
+    const instancedGlass = new THREE.InstancedMesh(geometryWindow[1], materialWindow[1], count);
 
     const matrix = new THREE.Matrix4();
     matrix.setPosition(0, 0, -depth/2);
@@ -108,8 +108,8 @@ var shift = 1.5;
 }
 
  function createObjectWindow() {
-    const meshEdge = new THREE.Mesh(geometryMatrix[0], materialMatrix[0]);
-    const meshGlass = new THREE.Mesh(geometryMatrix[1], materialMatrix[1]);
+    const meshEdge = new THREE.Mesh(geometryWindow[0], materialWindow[0]);
+    const meshGlass = new THREE.Mesh(geometryWindow[1], materialWindow[1]);
 
     meshGlass.position.z = -depth / 2;
 
@@ -124,12 +124,12 @@ var shift = 1.5;
     depth = d;
     shift = s;
 
-    geometryMatrix.length = 0;
+    geometryWindow.length = 0;
 
     const geometryEdge = createGeometryExternalWindow(w, h, d, s);
     const geometryGlass = createGeometryPlane(width - shift, height - shift);
 
-    if (materialMatrix.length == 0) {
+    if (materialWindow.length == 0) {
         const materialEdge = new THREE.MeshPhongMaterial({
             color: 0x000000,
         });
@@ -139,89 +139,10 @@ var shift = 1.5;
             transparent: true,
             side: THREE.DoubleSide,
         });
-        materialMatrix.push(materialEdge);
-        materialMatrix.push(materialGlass);
+        materialWindow.push(materialEdge);
+        materialWindow.push(materialGlass);
     }
 
-    geometryMatrix.push(geometryEdge);
-    geometryMatrix.push(geometryGlass);
-}
-
- function createWindowOptimized(w, h, d, s = 0.5) {               //deprecated
-    const externalGeometry = createGeometryExternalWindow(w, h, d, s);
-    const planeGeometry = createGeometryPlane();
-    
-    const materialPlane = new THREE.MeshPhysicalMaterial({
-        color: "white",
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide,
-    });
-
-    const materialWindow = new THREE.MeshPhongMaterial({
-        color: 0x000000,
-    });
-
-    const meshWindow = new THREE.Mesh(externalGeometry, materialWindow);
-    const meshPlane = createMesh(planeGeometry, materialPlane, (w - s), (h - s), 1);
-    meshPlane.position.z = -d + 0.5;
-
-    meshWindow.add(meshPlane);
-
-    return meshWindow;
-}
-
- function createWindow(width, height, depth, shift = 0.5)         //inutilizzata
-{
-    const ret = new THREE.Object3D();
-
-    const edge = new THREE.Shape()
-    .moveTo(-(width / 2), -(height / 2))
-    .lineTo(width / 2, -(height / 2))
-    .lineTo(width / 2, height / 2)
-    .lineTo(-(width / 2), height / 2)
-
-    const holeEdge = new THREE.Shape()
-    .moveTo(-(width / 2) + shift, -(height / 2) + shift)
-    .lineTo(-(width / 2) + shift, height / 2 - shift)
-    .lineTo(width / 2 - shift, height / 2 - shift)
-    .lineTo(width / 2 - shift, -(height / 2) + shift)
-
-    edge.holes.push(holeEdge);
-
-    const geometryInnerWindow = new THREE.ShapeGeometry(holeEdge);
-    const materialInnerWindow = new THREE.MeshPhysicalMaterial({
-        roughness: 0,
-        transmission: 0.7,
-        thickness: 0.5,
-        side: THREE.DoubleSide,
-    });
-    const meshInnerWindow = new THREE.Mesh(geometryInnerWindow, materialInnerWindow);
-
-    meshInnerWindow.position.z = depth / 2;
-
-    const extrudeSettings = {
-        depth: depth,
-    };
-
-    const geometryWindow = new THREE.ExtrudeGeometry(edge, extrudeSettings);
-    const materialWindow = new THREE.MeshPhongMaterial({
-        color: 0x000000,
-        side: THREE.DoubleSide,
-    });
-    const meshWindow = new THREE.Mesh(geometryWindow, materialWindow);
-
-    //meshWindow.position.x = width - ;
-    //meshWindow.position.y = ;
-    meshWindow.position.z = - depth / 2;
-
-    meshWindow.add(meshInnerWindow);
-
-    //const rectLight1 = new THREE.RectAreaLight( 0xffffff, 5, width, height );
-
-    ret.add(meshWindow);
-    //ret.add(rectLight1);
-    //ret.add( new RectAreaLightHelper( rectLight1 ));
-
-    return ret;
+    geometryWindow.push(geometryEdge);
+    geometryWindow.push(geometryGlass);
 }

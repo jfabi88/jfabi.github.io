@@ -1,5 +1,5 @@
 
- var roomTexture;
+var roomTexture;
 
 var widthWall = 80;
 var heightWall = 80;
@@ -18,58 +18,35 @@ var shiftWindow = 1.5;
 const geometryM = [];
 const materialM = [];
 
- class Room extends Element {
-    enabled =  false;
+class Room extends Block {
     obstacles = [];
-    elements = [];
     interface;
-    connectionPoints = [5, 6, 7];
-    orientationPoints =  [8, 9, 10];
     constructor (obj, w, h, d, a) {
         super(obj, w, h, d);
         this.type = "Room";
         this.interface = a;
     };
-    getConnectionPoints () {
-        return getConnectionPoints(this.obj, this.connectionPoints);
-    };
-    getOrientationPoints () {
-        return getConnectionPoints(this.obj, this.orientationPoints)[0];
-    };
-    connect (obj) {
-        connect(this.obj, obj, this.getOrientationPoints(), this.depth);
-    };
-    isIn (cat) {
-        //const backC = cat.obj.position.z + cat.depth / 2;
-        const frontC = cat.obj.position.z - cat.depth / 2;
-        const backR = this.obj.position.z + this.depth / 2;
-        const frontR = this.obj.position.z - this.depth / 2;
-
-        if (backR > frontC && frontR < frontC)
-            return true;
-        return false;
-    };
-    populate (memory, countSpawn, spawn, probability) {
+    populate (countSpawn, spawn, probability) {
         var flagLightFlag = getRandomInt(3);
         var obstacleFlag = getRandomInt(4 + Math.floor(probability / 2));
 
         if (countSpawn == spawn) {
-            if ((obstacleFlag == 0 || obstacleFlag == 1 || obstacleFlag == 3)) {
+            if ((obstacleFlag == 0 || obstacleFlag == 1 || obstacleFlag == 2)) {
                 this.obj.children[11].visible = true;
                 this.obstacles.push(this.interface[0]);
                 if (obstacleFlag == 1) {
-                    this.obj.children[15].visible = true;
-                    this.obstacles.push(this.interface[2]);
-                }
-                if (obstacleFlag == 3) {
                     this.obj.children[12].visible = true;
                     this.obstacles.push(this.interface[1]);
                 }
+                if (obstacleFlag == 2) {
+                    this.obj.children[13].visible = true;
+                    this.obstacles.push(this.interface[2]);
+                }
                 return [Math.floor(flagLightFlag / 2), obstacleFlag];
             }
-            else if (obstacleFlag == 2) {
-                this.obj.children[13].visible = true;
+            else if (obstacleFlag == 3) {
                 this.obj.children[14].visible = true;
+                this.obj.children[15].visible = true;
                 this.obstacles.push(this.interface[3]);
                 this.obstacles.push(this.interface[4]);
                 return [Math.floor(flagLightFlag / 2), obstacleFlag];
@@ -77,17 +54,7 @@ const materialM = [];
         }
         return [flagLightFlag, 0];
     };
-    rePopulate (memory) {
-        this.empty();
-        this.populate(memory);
-    };
     empty () {
-        for (var i = 0; i < this.toDispose.length; i++) {
-            removeElement(this.toDispose[i]);
-            this.obj.remove(this.toDispose[i].obj);
-        }
-        this.obj.children[11].visible = false;
-        this.obj.children[12].visible = false;
         if (this.interface[3].enabled) {
             this.interface[3].rotation1.rotation.y = 0;
             this.interface[3].rotation2.rotation.y = 0;
@@ -96,11 +63,11 @@ const materialM = [];
             this.interface[4].rotation1.rotation.y = 0;
             this.interface[4].rotation2.rotation.y = 0;
         }
+        this.obj.children[11].visible = false;
+        this.obj.children[12].visible = false;
         this.obj.children[13].visible = false;
         this.obj.children[14].visible = false;
         this.obj.children[15].visible = false;
-        this.toDispose = [];
-        this.elements = [];
         this.obstacles = [];
     };
 }
@@ -151,70 +118,20 @@ function createCeil(height, geometry, material) {
     return mesh;
 }
 
- function createObjRoomInstance(count) {
-    const instanceWallWindowDx = createObjectWallWindows(count);
-    const instanceWallDx = new THREE.InstancedMesh(geometryM[0], materialM[0], count);
-    const instanceWallSx = new THREE.InstancedMesh(geometryM[0], materialM[1], count);
-    const instanceFloor = new THREE.InstancedMesh(geometryM[1], materialM[2], count);
-    const instanceCeil = new THREE.InstancedMesh(geometryM[1], materialM[3], count);
-
-    const matrix = new THREE.Matrix4();
-    const matrix2 = new THREE.Matrix4();
-    const vector = new THREE.Vector3();
-
-    for (var i = 0; i < count; i++) {
-        matrix.makeRotationY(-Math.PI / 2);
-        matrix.setPosition(widthWall / 2, heightWall /2, 0);
-        instanceWallWindowDx[2].setMatrixAt(i, matrix);  
-    }
-
-    for (var j = 0; j < 2; j++) {
-        for (var i = 0; i < count * 4; i++) {
-            matrix.makeRotationY(-Math.PI / 2);
-            instanceWallWindowDx[j].getMatrixAt(i, matrix2);
-            vector.setFromMatrixPosition(matrix2);
-            matrix.setPosition(widthWall / 2 - vector.z, heightWall /2 + vector.y, 0 - vector.x);
-            instanceWallWindowDx[j].setMatrixAt(i, matrix);
-        }
-    }
-
-    for (var i = 0; i < count; i++) {
-        matrix.makeRotationY(-Math.PI / 2);
-        matrix.setPosition(widthWall / 2, heightWall / 2, 0);
-        instanceWallDx.setMatrixAt(i, matrix);
-    }
-    for (var i = 0; i < count; i++) {
-        matrix.identity();
-        matrix.makeRotationY(Math.PI / 2);
-        matrix.setPosition(-(widthWall / 2), heightWall / 2, 0);
-        instanceWallSx.setMatrixAt(i, matrix);       
-    }
-    for (var i = 0; i < count; i++) {
-        matrix.identity();
-        matrix.makeRotationX(- Math.PI / 2);
-        instanceFloor.setMatrixAt(i, matrix);          
-    }
-    for (var i = 0; i < count; i++) {
-        matrix.identity();
-        matrix.makeRotationX(Math.PI / 2);
-        //matrix.elements[10] = -1;
-        matrix.setPosition(0, heightWall, 0);
-        instanceCeil.setMatrixAt(i, matrix);
-    }
-
-    return ([instanceWallWindowDx[0], instanceWallWindowDx[1], instanceWallWindowDx[2], instanceWallDx, instanceWallSx, instanceFloor, instanceCeil]);
-}
-
- function createObjectRoom() {
+function createObjectRoom() {
     const obj = new THREE.Object3D();
 
     const flag = getRandomInt(2);
 
-    obj.add(createWallWindowDx(widthWall, heightWall));
-    obj.add(createWallDx(widthWall, heightWall, geometryM[0], materialM[0]));
-    obj.add(createWallSx(widthWall, heightWall, geometryM[0], materialM[1]));
-    obj.add(createFloor(geometryM[1], materialM[2]));
-    obj.add(createCeil(heightWall, geometryM[1], materialM[3]));
+    const wallWindow = createObjectWallWindows();
+    wallWindow.rotateY(-Math.PI / 2);
+    wallWindow.position.x = widthWall / 2;
+    wallWindow.position.y = heightWall / 2;
+    obj.add(wallWindow);                                                        //0
+    obj.add(createWallDx(widthWall, heightWall, geometryM[0], materialM[0]));   //1
+    obj.add(createWallSx(widthWall, heightWall, geometryM[0], materialM[1]));   //2
+    obj.add(createFloor(geometryM[1], materialM[2]));                           //3
+    obj.add(createCeil(heightWall, geometryM[1], materialM[3]));                //4
 
     if (flag == 0)
         obj.children[0].visible = false;
@@ -255,17 +172,17 @@ function createCeil(height, geometry, material) {
     bar.obj.position.y += table.height / 2;
     bar.obj.visible = false;
 
-    const turnstile = obstaclesCreate("Turnstile");
-    obj.add(turnstile[0].obj);          //13
-    obj.add(turnstile[1].obj);          //14
-    turnstile[0].obj.visible = false;
-    turnstile[1].obj.visible = false;
-
     const computer = obstaclesCreate("Computer");
-    obj.add(computer.obj);              //15
+    obj.add(computer.obj);              //13
     computer.obj.position.y = table.obj.position.y + table.height / 2 + computer.height / 2;
     computer.obj.position.z = computer.depth / 2;
     computer.obj.visible = false;
+
+    const turnstile = obstaclesCreate("Turnstile");
+    obj.add(turnstile[0].obj);          //14
+    obj.add(turnstile[1].obj);          //15
+    turnstile[0].obj.visible = false;
+    turnstile[1].obj.visible = false;
 
     const ret = new Room(obj, widthWall, heightWall, depthWall, [table, bar, computer, turnstile[0], turnstile[1]]);
     return ret;

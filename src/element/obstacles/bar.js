@@ -7,13 +7,21 @@ class Bar extends Element {
     };
 }
 
-function createBar() {
-    const obj = new THREE.Object3D();
+const geometryBar = [];
+const materialBar = [];
 
-
+function createGeoMatBar() {
     const geometryTop = createGeometryCube([1, 0, 0, 0, 1, 0], 7, 5.0, 2.5);
     const materialTop = new THREE.MeshPhongMaterial({color: "rgb(40, 40, 40)"});
-    const top = new THREE.Mesh(geometryTop, materialTop);
+
+    geometryBar.push(geometryTop);
+    materialBar.push(materialTop);
+}
+
+function createObjectBar() {
+    const obj = new THREE.Object3D();
+
+    const top = new THREE.Mesh(geometryBar[0], materialBar[0]);
 
     obj.add(top);
 

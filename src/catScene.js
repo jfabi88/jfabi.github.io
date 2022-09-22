@@ -100,6 +100,34 @@ function stop(mainScene) {
     mainScene.died = true;
 }
 
+function runGame(mainScene, catdirection, memory, delta, score) {
+    mainScene.tweenGA.forEach(group => {
+      group.update();
+    });
+    if (mainScene.cat != null && mainScene.pause == false) {
+      mainScene.mixers.forEach((mixer) => {
+        mixer.update(delta);
+      });
+      changePosition(mainScene.cat.obj.position, catdirection, mainScene.catspeed * delta * (mainScene.ambientSpeed / 100.0), mainScene.limit);
+      if (mainScene.catspeed > 0.0)
+        mainScene.catspeed -= 5.0;
+      else if (mainScene.catspeed < 0.0)
+        mainScene.catspeed += 5.0;
+      updateScene(mainScene, memory, delta);
+      mainScene.room = checkIn(mainScene.cat, mainScene.elementsA, mainScene.wallsA);
+      if (mainScene.room == null) {
+        stop(mainScene);
+      }
+      if (mainScene.room && mainScene.room.type == "Room") {
+        checkAnimation(mainScene.room.obstacles, mainScene.cat, mainScene.tweenGA);
+      }
+      if (mainScene.room && mainScene.room.type == "Room" && checkIntersection(mainScene.room.obstacles, mainScene.cat))
+            stop(mainScene);
+        mainScene.score += 0.1;
+        score.textContent = Math.floor(mainScene.score);
+    }
+}
+
 function init() {
     var renderer = new THREE.WebGLRenderer({
         alpha: true,
@@ -194,6 +222,7 @@ function init() {
 
     loadManagerGame.onLoad = () => {
         createAllObject(mainScene, memory.roomA, memory.obstacleA, memory.decorationA);
+        createLimit(mainScene);
         createWay(mainScene, memory);
     }
 
@@ -223,6 +252,7 @@ function init() {
 
             elem = document.getElementById("pressStart");
             elem.style.visibility = "visible";
+            console.log("Tasto start premuto!");
         }
     };
 
@@ -243,34 +273,10 @@ function init() {
     function render() {
         if (scene == scene2) {
             delta = clock.getDelta(); //deve stare fuori dalla pausa
-            mainScene.tweenGA.forEach(group => {
-              group.update();
-            });
-            if (mainScene.cat != null && mainScene.pause == false) {
-              mainScene.mixers.forEach((mixer) => {
-                mixer.update(delta);
-              });
-              changePosition(mainScene.cat.obj.position, catdirection, mainScene.catspeed * delta * (mainScene.ambientSpeed / 100.0), mainScene.limit);
-              if (mainScene.catspeed > 0.0)
-                mainScene.catspeed -= 5.0;
-              else if (mainScene.catspeed < 0.0)
-                mainScene.catspeed += 5.0;
-              updateScene(mainScene, memory, delta);
-              mainScene.room = checkIn(mainScene.cat, mainScene.elementsA, mainScene.wallsA);
-              if (mainScene.room == null) {
-                stop(mainScene);
-              }
-              if (mainScene.room) {
-                checkAnimation(mainScene.room.obstacles, mainScene.cat, mainScene.tweenGA);
-              }
-              if (mainScene.room && checkIntersection(mainScene.room.obstacles, mainScene.cat))
-                    stop(mainScene);
-                mainScene.score += 0.1;
-                score.textContent = Math.floor(mainScene.score);
-            }
+            runGame(mainScene, catdirection, memory, delta, score);
             //console.log(renderer.info.render.calls);
-            renderer.info.autoReset = false;
-            renderer.info.reset();
+            //renderer.info.autoReset = false;
+            //renderer.info.reset();
         }
         renderer.render(scene, camera);
         requestAnimationFrame(render);

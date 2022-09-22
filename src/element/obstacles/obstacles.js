@@ -4,10 +4,8 @@
 
   if (type == "Table")
   {
-    obstacle = createTable();
+    obstacle = createObjectTable();
     newScale(obstacle, [5, 2.5, 5]);
-    obstacle.intersectionLimit[0] *= 3;
-    obstacle.intersectionLimit[1] *= 3;
     obstacle.obj.position.y += obstacle.height / 2;
   }
   else if (type == "Turnstile") {
@@ -30,7 +28,7 @@
     obstacle.obj.position.y += obstacle.height / 2;
   }
   else if (type == "Bar") {
-    obstacle = createBar();
+    obstacle = createObjectBar();
     newScale(obstacle, [5, 2.5, 5]);
   }
   return obstacle;
