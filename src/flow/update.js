@@ -117,7 +117,6 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
         if (mainScene.ambientSpeed < 250)
             mainScene.ambientSpeed += 5;
         countSpawn = 0;
-        console.log(mainScene.score);
         if ((mainScene.spawn != 2) && (mainScene.score > (5 - mainScene.spawn) * 200))
         {
             countSpawn = 1;
