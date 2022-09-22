@@ -85,7 +85,7 @@
     elem.style.visibility = "visible";
 
     setFlag(true);
-    setLastObstacle(0);
+    setSpawn(0);
 }
 
  function createWay(mainScene, memory) {

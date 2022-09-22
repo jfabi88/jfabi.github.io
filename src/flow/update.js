@@ -1,16 +1,16 @@
 
 var flag = true;
-var lastObstacle = 0;
+var countSpawn = 4;
 
 function setFlag(bool) {
     flag = bool;
 }
 
-function setLastObstacle(num) {
-    lastObstacle = num;
+function setSpawn(num) {
+    countSpawn = num;
 }
 
-function addRoom(memory, lastObj, wallsA, decorationA) {
+function addRoom(memory, lastObj, wallsA, decorationA, spawn) {
     const toRet = [];
     var elem;
     var light;
@@ -22,9 +22,13 @@ function addRoom(memory, lastObj, wallsA, decorationA) {
         for (var j = 0; j < conPoiA.length; j++) {
             wall = takeElement(memory, "Room");
             wall.available = false;
-            elem = wall.populate(memory, lastObstacle);
+            elem = wall.populate(memory, countSpawn, spawn);
+            console.log("Questo: ", countSpawn, " quello ", spawn);
+            if (countSpawn == spawn)
+                countSpawn = 1;
+            else
+                countSpawn++;
             wall.obj.visible = true;
-            //scene.add(wall.obj);
             wall.connect(conPoiA[j]);
             wallsA.push(wall);
             toRet.push(wall);
@@ -37,7 +41,6 @@ function addRoom(memory, lastObj, wallsA, decorationA) {
                     decorationA.push(light);
                 }
             }
-            lastObstacle = elem[1];
         }
     }
     return (toRet);
@@ -59,8 +62,6 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
     elementsArray.push(tRoom);
 
     toRet.push(tRoom);
-
-    lastObstacle = 3;
 
     return(toRet);
 }
@@ -107,7 +108,7 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
         elem.obj.visible = false;
         elem.available = true;
         if (mainScene.wallsA.length <= (6 * mainScene.lastObj.length)) {
-            mainScene.lastObj = addRoom(memory, mainScene.lastObj, mainScene.wallsA, mainScene.decorationA);
+            mainScene.lastObj = addRoom(memory, mainScene.lastObj, mainScene.wallsA, mainScene.decorationA, mainScene.spawn);
         }
     });
     if (mainScene.distance > mainScene.limitDistance) {
@@ -115,6 +116,11 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
         flag = false;
         mainScene.distance = 0;
         if (mainScene.ambientSpeed < 250)
-            mainScene.ambientSpeed += 10; 
+            mainScene.ambientSpeed += 5;
+        if ((mainScene.spawn != 2) && (mainScene.score > (5 - mainScene.spawn) * 2))
+        {
+            countSpawn = 1;
+            mainScene.spawn--;
+        }
     }
 }

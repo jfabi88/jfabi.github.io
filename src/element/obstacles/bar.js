@@ -11,7 +11,7 @@ function createBar() {
     const obj = new THREE.Object3D();
 
 
-    const geometryTop = createGeometryCube([1, 0, 0, 0, 1, 0], 7, 2.0, 2.5);
+    const geometryTop = createGeometryCube([1, 0, 0, 0, 1, 0], 7, 5.0, 2.5);
     const materialTop = new THREE.MeshPhongMaterial({color: "rgb(40, 40, 40)"});
     const top = new THREE.Mesh(geometryTop, materialTop);
 

@@ -49,29 +49,32 @@ const materialM = [];
             return true;
         return false;
     };
-    populate (memory, lastObstacle) {
+    populate (memory, countSpawn, spawn) {
         var flagLightFlag = getRandomInt(3);
-        var obsatcleFlag = getRandomInt(7);
+        var obstacleFlag = getRandomInt(7);
 
-        if ((lastObstacle != 3) && (obsatcleFlag == 2 || obsatcleFlag == 3 || obsatcleFlag == 5)) {
-            this.obj.children[11].visible = true;
-            this.obstacles.push(this.interface[0]);
-            if (obsatcleFlag == 3) {
-                this.obj.children[15].visible = true;
-                this.obstacles.push(this.interface[2]);
+        if (countSpawn == spawn) {
+            console.log("Siamo qua dentro!");
+            if ((obstacleFlag == 2 || obstacleFlag == 3 || obstacleFlag == 5)) {
+                this.obj.children[11].visible = true;
+                this.obstacles.push(this.interface[0]);
+                if (obstacleFlag == 3) {
+                    this.obj.children[15].visible = true;
+                    this.obstacles.push(this.interface[2]);
+                }
+                if (obstacleFlag == 5) {
+                    this.obj.children[12].visible = true;
+                    this.obstacles.push(this.interface[1]);
+                }
+                return [Math.floor(flagLightFlag / 2), obstacleFlag];
             }
-            if (obsatcleFlag == 5) {
-                this.obj.children[12].visible = true;
-                this.obstacles.push(this.interface[1]);
+            else if (obstacleFlag == 4) {
+                this.obj.children[13].visible = true;
+                this.obj.children[14].visible = true;
+                this.obstacles.push(this.interface[3]);
+                this.obstacles.push(this.interface[4]);
+                return [Math.floor(flagLightFlag / 2), obstacleFlag];
             }
-            return [Math.floor(flagLightFlag / 2), obsatcleFlag];
-        }
-        if ((lastObstacle != 3 && lastObstacle != 4) && obsatcleFlag == 4) {
-            this.obj.children[13].visible = true;
-            this.obj.children[14].visible = true;
-            this.obstacles.push(this.interface[3]);
-            this.obstacles.push(this.interface[4]);
-            return [Math.floor(flagLightFlag / 2), obsatcleFlag];
         }
         return [flagLightFlag, 0];
     };

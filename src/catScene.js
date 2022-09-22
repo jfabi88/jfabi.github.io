@@ -148,6 +148,7 @@ function init() {
         died: false,
         score: 0,
         room: null,
+        spawn: 4,
         lastObj: [],
         decorationA: [],
         elementsA: [],
