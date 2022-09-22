@@ -47,7 +47,7 @@ function onKeyPress(key, mainScene) {
         }
     }
     else if (key == " ") {
-        if (mainScene.pause == true && mainScene.died == false) {
+        if (mainScene.pause == true && mainScene.died == false && mainScene.died == false) {
             const elem = document.getElementById("pressStart");
             elem.style.visibility = "hidden";
             mainScene.pause = false;
