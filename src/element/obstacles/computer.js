@@ -176,7 +176,6 @@ function createComputer () {
 
     const rotationAngleScreen = THREE.MathUtils.DEG2RAD * 10;
     meshScreen.rotateX(Math.PI / 2 - rotationAngleScreen);
-    console.log(meshMiddle.position.z);
     meshScreen.position.y = meshMiddle.position.y - (Math.sin(rotationAngle) * (1.5));
     meshScreen.position.z = meshMiddle.position.z + (Math.cos(rotationAngle) * (1.5));
     obj.add(meshScreen);
