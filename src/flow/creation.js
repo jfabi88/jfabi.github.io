@@ -85,7 +85,8 @@
     elem.style.visibility = "visible";
 
     setFlag(true);
-    setSpawn(0);
+    setSpawn(1);
+    mainScene.spawn = 4;
 }
 
  function createWay(mainScene, memory) {

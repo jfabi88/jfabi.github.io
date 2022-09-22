@@ -22,8 +22,7 @@ function addRoom(memory, lastObj, wallsA, decorationA, spawn) {
         for (var j = 0; j < conPoiA.length; j++) {
             wall = takeElement(memory, "Room");
             wall.available = false;
-            elem = wall.populate(memory, countSpawn, spawn);
-            console.log("Questo: ", countSpawn, " quello ", spawn);
+            elem = wall.populate(memory, countSpawn, spawn, (4 - spawn) * 2);
             if (countSpawn == spawn)
                 countSpawn = 1;
             else
@@ -117,7 +116,9 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
         mainScene.distance = 0;
         if (mainScene.ambientSpeed < 250)
             mainScene.ambientSpeed += 5;
-        if ((mainScene.spawn != 2) && (mainScene.score > (5 - mainScene.spawn) * 2))
+        countSpawn = 0;
+        console.log(mainScene.score);
+        if ((mainScene.spawn != 2) && (mainScene.score > (5 - mainScene.spawn) * 200))
         {
             countSpawn = 1;
             mainScene.spawn--;

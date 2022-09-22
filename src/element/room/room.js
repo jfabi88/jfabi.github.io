@@ -49,26 +49,25 @@ const materialM = [];
             return true;
         return false;
     };
-    populate (memory, countSpawn, spawn) {
+    populate (memory, countSpawn, spawn, probability) {
         var flagLightFlag = getRandomInt(3);
-        var obstacleFlag = getRandomInt(7);
+        var obstacleFlag = getRandomInt(4 + Math.floor(probability / 2));
 
         if (countSpawn == spawn) {
-            console.log("Siamo qua dentro!");
-            if ((obstacleFlag == 2 || obstacleFlag == 3 || obstacleFlag == 5)) {
+            if ((obstacleFlag == 0 || obstacleFlag == 1 || obstacleFlag == 3)) {
                 this.obj.children[11].visible = true;
                 this.obstacles.push(this.interface[0]);
-                if (obstacleFlag == 3) {
+                if (obstacleFlag == 1) {
                     this.obj.children[15].visible = true;
                     this.obstacles.push(this.interface[2]);
                 }
-                if (obstacleFlag == 5) {
+                if (obstacleFlag == 3) {
                     this.obj.children[12].visible = true;
                     this.obstacles.push(this.interface[1]);
                 }
                 return [Math.floor(flagLightFlag / 2), obstacleFlag];
             }
-            else if (obstacleFlag == 4) {
+            else if (obstacleFlag == 2) {
                 this.obj.children[13].visible = true;
                 this.obj.children[14].visible = true;
                 this.obstacles.push(this.interface[3]);
