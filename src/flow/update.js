@@ -37,6 +37,7 @@ function addRoom(memory, lastObj, wallsA, decorationA, spawn) {
                     light.available = false;
                     light.obj.position.x = wall.obj.position.x;
                     light.obj.position.z = wall.obj.position.z;
+                    console.log("Luce aggiunta");
                     decorationA.push(light);
                 }
             }

@@ -8,7 +8,7 @@
     }
     for (var j = 0; j < wallsA.length; j++) {
         const room = wallsA[j];
-        if (room.obj.position.x < 10 && room.obj.position.x > -10 && room.isIn(cat)) {
+        if (room.isIn(cat)) {
           return room;
         }
     }

@@ -116,6 +116,7 @@ function runGame(mainScene, catdirection, memory, delta, score) {
       updateScene(mainScene, memory, delta);
       mainScene.room = checkIn(mainScene.cat, mainScene.elementsA, mainScene.wallsA);
       if (mainScene.room == null) {
+        console.log("Non siamo nella stanza")
         stop(mainScene);
       }
       if (mainScene.room && mainScene.room.type == "Room") {
