@@ -23,9 +23,9 @@
     for (var i = 0; i < array.length; i++) {
         if (array[i] == obj) {
           array.splice(i, 1);
-          obj.obj.visible = false;
+          //obj.obj.visible = false;
           //scene.remove(obj.obj);
-          obj.available = true;
+          //obj.available = true;
           break ;
         }
     } 
@@ -113,7 +113,7 @@
     return componeGeometry(vertices, index);
 }
 
- function createGeometryCube(face) {
+ function createGeometryCube(face, width = 2, height = 2, depth = 2) {
     const vertices = [];
     const index = [];
     var size = 0;
@@ -121,10 +121,10 @@
     if (face[0]) {
         vertices.push(
             // front == 1
-            { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 1], }, // 0
-            { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 1], }, // 1
-            { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 0], }, // 2
-            { pos: [ 1,  1,  1], norm: [ 0,  0,  1], uv: [1, 0], }, // 3
+            { pos: [-0.5 * width, -0.5 * height,  0.5 * depth], norm: [ 0,  0,  1], uv: [0, 1], }, // 0
+            { pos: [ 0.5 * width, -0.5 * height,  0.5 * depth], norm: [ 0,  0,  1], uv: [1, 1], }, // 1
+            { pos: [-0.5 * width,  0.5 * height,  0.5 * depth], norm: [ 0,  0,  1], uv: [0, 0], }, // 2
+            { pos: [ 0.5 * width,  0.5 * height,  0.5 * depth], norm: [ 0,  0,  1], uv: [1, 0], }, // 3
         )
         index.push(0,  1,  2,   2,  1,  3);
         size++;
@@ -132,10 +132,10 @@
     if (face[1]) {
         vertices.push(
             // right == 2
-            { pos: [ 1, -1,  1], norm: [ 1,  0,  0], uv: [0, 1], }, // 4
-            { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 1], }, // 5
-            { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 0], }, // 6
-            { pos: [ 1,  1, -1], norm: [ 1,  0,  0], uv: [1, 0], }, // 7
+            { pos: [ 0.5 * width, -0.5 * height,  0.5 * depth], norm: [ 1,  0,  0], uv: [0, 1], }, // 4
+            { pos: [ 0.5 * width, -0.5 * height, -0.5 * depth], norm: [ 1,  0,  0], uv: [1, 1], }, // 5
+            { pos: [ 0.5 * width,  0.5 * height,  0.5 * depth], norm: [ 1,  0,  0], uv: [0, 0], }, // 6
+            { pos: [ 0.5 * width,  0.5 * height, -0.5 * depth], norm: [ 1,  0,  0], uv: [1, 0], }, // 7
         )
         index.push(0 + (4 * size),  1 + (4 * size),  2 + (4 * size),   2 + (4 * size),  1 + (4 * size),  3 + (4 * size));
         size++;
@@ -143,10 +143,10 @@
     if (face[2]) {
         vertices.push(
             // back == 3
-            { pos: [ 1, -1, -1], norm: [ 0,  0, -1], uv: [0, 1], }, // 8
-            { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 1], }, // 9
-            { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 0], }, // 10
-            { pos: [-1,  1, -1], norm: [ 0,  0, -1], uv: [1, 0], }, // 11
+            { pos: [ 0.5 * width, -0.5 * height, -0.5 * depth], norm: [ 0,  0, -1], uv: [0, 1], }, // 8
+            { pos: [-0.5 * width, -0.5 * height, -0.5 * depth], norm: [ 0,  0, -1], uv: [1, 1], }, // 9
+            { pos: [ 0.5 * width,  0.5 * height, -0.5 * depth], norm: [ 0,  0, -1], uv: [0, 0], }, // 10
+            { pos: [-0.5 * width,  0.5 * height, -0.5 * depth], norm: [ 0,  0, -1], uv: [1, 0], }, // 11
         )
         index.push(0 + (4 * size),  1 + (4 * size),  2 + (4 * size),   2 + (4 * size),  1 + (4 * size),  3 + (4 * size));
         size++;
@@ -154,10 +154,10 @@
     if (face[3]) {
         // left == 4
         vertices.push(
-            { pos: [-1, -1, -1], norm: [-1,  0,  0], uv: [0, 1], }, // 12
-            { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 1], }, // 13
-            { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 0], }, // 14
-            { pos: [-1,  1,  1], norm: [-1,  0,  0], uv: [1, 0], }, // 15
+            { pos: [-0.5 * width, -0.5 * height, -0.5 * depth], norm: [-1,  0,  0], uv: [0, 1], }, // 12
+            { pos: [-0.5 * width, -0.5 * height,  0.5 * depth], norm: [-1,  0,  0], uv: [1, 1], }, // 13
+            { pos: [-0.5 * width,  0.5 * height, -0.5 * depth], norm: [-1,  0,  0], uv: [0, 0], }, // 14
+            { pos: [-0.5 * width,  0.5 * height,  0.5 * depth], norm: [-1,  0,  0], uv: [1, 0], }, // 15
         )
         index.push(0 + (4 * size),  1 + (4 * size),  2 + (4 * size),   2 + (4 * size),  1 + (4 * size),  3 + (4 * size));
         size++;
@@ -165,10 +165,10 @@
     if (face[4]) {
         vertices.push(   
             // top == 5
-            { pos: [ 1,  1, -1], norm: [ 0,  1,  0], uv: [0, 1], }, // 16
-            { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 1], }, // 17
-            { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 0], }, // 18
-            { pos: [-1,  1,  1], norm: [ 0,  1,  0], uv: [1, 0], }, // 19
+            { pos: [ 0.5 * width,  0.5 * height, -0.5 * depth], norm: [ 0,  1,  0], uv: [0, 1], }, // 16
+            { pos: [-0.5 * width,  0.5 * height, -0.5 * depth], norm: [ 0,  1,  0], uv: [1, 1], }, // 17
+            { pos: [ 0.5 * width,  0.5 * height,  0.5 * depth], norm: [ 0,  1,  0], uv: [0, 0], }, // 18
+            { pos: [-0.5 * width,  0.5 * height,  0.5 * depth], norm: [ 0,  1,  0], uv: [1, 0], }, // 19
         )
         index.push(0 + (4 * size),  1 + (4 * size),  2 + (4 * size),   2 + (4 * size),  1 + (4 * size),  3 + (4 * size));
         size++;
@@ -176,10 +176,10 @@
     if (face[5]) {
         vertices.push(   
             // bottom == 6
-            { pos: [ 1, -1,  1], norm: [ 0, -1,  0], uv: [0, 1], }, // 20
-            { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 1], }, // 21
-            { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 0], }, // 22
-            { pos: [-1, -1, -1], norm: [ 0, -1,  0], uv: [1, 0], }, // 23
+            { pos: [ 0.5 * width, -0.5 * height,  0.5 * depth], norm: [ 0, -1,  0], uv: [0, 1], }, // 20
+            { pos: [-0.5 * width, -0.5 * height,  0.5 * depth], norm: [ 0, -1,  0], uv: [1, 1], }, // 21
+            { pos: [ 0.5 * width, -0.5 * height, -0.5 * depth], norm: [ 0, -1,  0], uv: [0, 0], }, // 22
+            { pos: [-0.5 * width, -0.5 * height, -0.5 * depth], norm: [ 0, -1,  0], uv: [1, 0], }, // 23
         )
         index.push(0 + (4 * size),  1 + (4 * size),  2 + (4 * size),   2 + (4 * size),  1 + (4 * size),  3 + (4 * size));
     }

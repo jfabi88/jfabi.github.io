@@ -29,6 +29,10 @@
     obstacle.obj.rotation.x = -Math.PI / 2;
     obstacle.obj.position.y += obstacle.height / 2;
   }
+  else if (type == "Bar") {
+    obstacle = createBar();
+    newScale(obstacle, [5, 2.5, 5]);
+  }
   return obstacle;
 }
 

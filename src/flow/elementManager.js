@@ -21,7 +21,7 @@ function removeElement(obj) {
 
 function takeElement(elementMemory, type) {
     if (type == "Room") {
-        for (var i = 0; i < elementMemory.roomA.length - 1; i++) {
+        for (var i = 0; i < 20 - 1; i++) {
             if (elementMemory.roomA[i].available == true) {
                 return elementMemory.roomA[i];
             }

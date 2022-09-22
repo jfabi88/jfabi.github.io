@@ -149,6 +149,7 @@ function init() {
         score: 0,
         room: null,
         lastObj: [],
+        decorationA: [],
         elementsA: [],
         wallsA: [],
         obstaclesA: [],

@@ -49,54 +49,31 @@ const materialM = [];
             return true;
         return false;
     };
-    populate (memory) {
+    populate (memory, lastObstacle) {
         var flagLightFlag = getRandomInt(3);
-        var obsatcleFlag = getRandomInt(6);
-        var cLight;
-        var obstacle;
+        var obsatcleFlag = getRandomInt(7);
 
-        if (flagLightFlag == 2) {
-            //this.obj.children[11].visible = true;
-            //cLight = takeElement(memory, "CeilingLight");
-            //if (cLight) {  
-            //    cLight.obj.position.y = 78.5;
-                //cLight.obj.rotation.x = Math.PI / 2;
-            //    cLight.available = false;
-            //    this.obj.add(cLight.obj);
-            //    this.toDispose.push(cLight);
-            //}
-        }
-        if (obsatcleFlag == 2 || obsatcleFlag == 3) {
-            this.obj.children[12].visible = true;
+        if ((lastObstacle != 3) && (obsatcleFlag == 2 || obsatcleFlag == 3 || obsatcleFlag == 5)) {
+            this.obj.children[11].visible = true;
             this.obstacles.push(this.interface[0]);
             if (obsatcleFlag == 3) {
                 this.obj.children[15].visible = true;
+                this.obstacles.push(this.interface[2]);
+            }
+            if (obsatcleFlag == 5) {
+                this.obj.children[12].visible = true;
                 this.obstacles.push(this.interface[1]);
             }
-            /*obstacle = takeElement(memory, "Table");
-            if (obstacle) {
-                obstacle.available = false;
-                this.obj.add(obstacle.obj);
-                this.toDispose.push(obstacle);
-                this.obstacles.push(obstacle);
-            }*/
+            return [Math.floor(flagLightFlag / 2), obsatcleFlag];
         }
-        if (obsatcleFlag == 4) {
+        if ((lastObstacle != 3 && lastObstacle != 4) && obsatcleFlag == 4) {
             this.obj.children[13].visible = true;
             this.obj.children[14].visible = true;
-            this.obstacles.push(this.interface[2]);
             this.obstacles.push(this.interface[3]);
-            /*obstacle = takeElement(memory, "Turnstile");
-            if (obstacle) {
-                obstacle[0].available = false;
-                this.obj.add(obstacle[0].obj);
-                this.obj.add(obstacle[1].obj);
-                this.toDispose.push(obstacle[0]);
-                this.obstacles.push(obstacle[0]);
-                this.toDispose.push(obstacle[1]);
-                this.obstacles.push(obstacle[1]);
-            }*/
+            this.obstacles.push(this.interface[4]);
+            return [Math.floor(flagLightFlag / 2), obsatcleFlag];
         }
+        return [flagLightFlag, 0];
     };
     rePopulate (memory) {
         this.empty();
@@ -109,13 +86,13 @@ const materialM = [];
         }
         this.obj.children[11].visible = false;
         this.obj.children[12].visible = false;
-        if (this.interface[2].enabled) {
-            this.interface[2].rotation1.rotation.y = 0;
-            this.interface[2].rotation2.rotation.y = 0;
-        }
-        else {
+        if (this.interface[3].enabled) {
             this.interface[3].rotation1.rotation.y = 0;
             this.interface[3].rotation2.rotation.y = 0;
+        }
+        else {
+            this.interface[4].rotation1.rotation.y = 0;
+            this.interface[4].rotation2.rotation.y = 0;
         }
         this.obj.children[13].visible = false;
         this.obj.children[14].visible = false;
@@ -250,9 +227,9 @@ function createCeil(height, geometry, material) {
     cPoint2.position.set(0, 0, -depthWall / 2);
     cPoint3.position.set(0, heightWall, -depthWall / 2);
 
-    obj.add(cPoint1);                   //4
-    obj.add(cPoint2);                   //5
-    obj.add(cPoint3);                   //6
+    obj.add(cPoint1);                   //5
+    obj.add(cPoint2);                   //6
+    obj.add(cPoint3);                   //7
 
     const oPoint1 = new THREE.Object3D();
     const oPoint2 = new THREE.Object3D();
@@ -262,33 +239,33 @@ function createCeil(height, geometry, material) {
     oPoint2.position.set(0, 0, 0);
     oPoint3.position.set(0, 1, 0);
 
-    obj.add(oPoint1);                   //7
-    obj.add(oPoint2);                   //8
-    obj.add(oPoint3);                   //9
-
-    const newLight = createCeilingLampOptimized(5, 2, 5, 0.5);
-    obj.add(newLight.obj);
-    newLight.obj.visible = false;
-
-    newLight.obj.position.y = 78.5;
+    obj.add(oPoint1);                   //8
+    obj.add(oPoint2);                   //9
+    obj.add(oPoint3);                   //10
 
     const table = obstaclesCreate("Table");
-    obj.add(table.obj);
+    obj.add(table.obj);                 //11
     table.obj.visible = false;
 
+    const bar = obstaclesCreate("Bar");
+    obj.add(bar.obj);                   //12
+    bar.obj.position = table.obj.position;
+    bar.obj.position.y += table.height / 2;
+    bar.obj.visible = false;
+
     const turnstile = obstaclesCreate("Turnstile");
-    obj.add(turnstile[0].obj);
-    obj.add(turnstile[1].obj);
+    obj.add(turnstile[0].obj);          //13
+    obj.add(turnstile[1].obj);          //14
     turnstile[0].obj.visible = false;
     turnstile[1].obj.visible = false;
 
     const computer = obstaclesCreate("Computer");
-    obj.add(computer.obj);
+    obj.add(computer.obj);              //15
     computer.obj.position.y = table.obj.position.y + table.height / 2 + computer.height / 2;
     computer.obj.position.z = computer.depth / 2;
     computer.obj.visible = false;
 
-    const ret = new Room(obj, widthWall, heightWall, depthWall, [table, computer, turnstile[0], turnstile[1]]);
+    const ret = new Room(obj, widthWall, heightWall, depthWall, [table, bar, computer, turnstile[0], turnstile[1]]);
     return ret;
 }
 

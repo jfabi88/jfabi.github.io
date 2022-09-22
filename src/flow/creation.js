@@ -36,17 +36,23 @@
 
     for (var i = 0; i < 3; i++) {
         obstacleA.push(obstaclesCreate("Turnstile"));
-    }
+    }*/
 
     for (var i = 0; i < 6; i++) {
-        decorationA.push(createCeilingLampOptimized(5, 2, 5, 0.5));
-    }*/
+        elem = createCeilingLampOptimized(5, 2, 5, 0.5);
+        elem.frustumCulled = false;
+        elem.obj.position.y = mainScene.heightRoom - elem.height / 2;
+        elem.obj.position.z = -400;
+        elem.obj.position.x = -200;
+        decorationA.push(elem);
+        mainScene.scene.add(elem.obj);
+    }
 }
 
  function reset(mainScene, memory) {
     const room = memory.roomA[19];
     const conPoint = room.getConnectionPoints()[0];
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 19; i++) {
         memory.roomA[i].empty();
         memory.roomA[i].available = true;
         memory.roomA[i].obj.visible = false;
@@ -56,6 +62,11 @@
         memory.roomA[i].available = true;
         memory.roomA[i].obj.visible = false;
     }
+    for (var i = 0; i < 6; i++) {
+        memory.decorationA[i].obj.position.x = -200;
+        memory.decorationA[i].obj.position.z = -400;
+        memory.decorationA[i].available = true;
+    }
     mainScene.pause = true;
     mainScene.cat.obj.position.x = 0;
     mainScene.cat.stopAnimation("slip");
@@ -64,6 +75,7 @@
     mainScene.lastObj = [];
     mainScene.wallsA = [];
     mainScene.elementsA = [];
+    mainScene.decorationA = [];
     mainScene.distance = 0;
     mainScene.ambientSpeed = 100;
     mainScene.score = 0;
@@ -73,6 +85,7 @@
     elem.style.visibility = "visible";
 
     setFlag(true);
+    setLastObstacle(0);
 }
 
  function createWay(mainScene, memory) {

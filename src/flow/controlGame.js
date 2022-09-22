@@ -36,12 +36,12 @@ function onKeyPress(key, mainScene) {
     else if (key == "d" && mainScene.cat != null) {
         mainScene.catspeed = 50;
     }
-    else if (key == "q") {
+    else if (key == "o") {
         if (mainScene.room && mainScene.room.enabled && mainScene.room.canRotate(mainScene.cat)) {
             rotationCamera(mainScene, -Math.PI / 2);
         }
     }
-    else if (key == "e") {
+    else if (key == "p") {
         if (mainScene.room && mainScene.room.enabled && mainScene.room.canRotate(mainScene.cat)) {
             rotationCamera(mainScene, Math.PI / 2);
         }
