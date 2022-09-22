@@ -264,6 +264,7 @@ function init() {
         reset(mainScene, memory);
         score.textContent = 0;
         createWay(mainScene, memory);
+        console.log("Tasto restart premuto!");
     }
 
     var clock = new THREE.Clock();
