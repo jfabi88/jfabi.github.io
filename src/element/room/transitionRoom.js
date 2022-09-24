@@ -14,7 +14,7 @@ class TransitionRoom extends Block {
         const backR = this.obj.position.z + this.depth / 2;
         const frontR = this.obj.position.z - this.depth / 2;
 
-        if (backR > backC && frontR < frontC)
+        if (backR - 20 > backC && frontR + 20 < frontC)
             return true;
         return false;
     };
@@ -43,14 +43,17 @@ var heightTR;
 var depthTR;
 var depthWallTR;
 
-function createAnimationTransitionRoomTween(array, room, group, angle) {
+function createAnimationTransitionRoomTween(array, maincat, group, angle) {
     var tween;
     var newP;
 
     array.forEach(element => {
-        tween = new TWEEN.Tween(element.obj, group);
-        newP = rotateOnPoint(element.obj, room.position, new THREE.Vector3(0, 1, 0), angle);
-        tween.to({position: newP[0], quaternion: newP[1]}, 100).start()
+        if (element.obj.position.z - 70 < maincat.obj.position.z) {
+            tween = new TWEEN.Tween(element.obj, group);
+            newP = rotateOnPoint(element.obj, new THREE.Vector3(0, 0, -10), new THREE.Vector3(0, 1, 0), angle);
+            console.log("Il newP:", newP[0], newP[1]);
+            tween.to({position: newP[0], quaternion: newP[1]}, 100).start();
+        }
     });
 }
 
@@ -361,17 +364,18 @@ function createDoorWallGeometry(width, height, depth) {
 
 function createTransitionRoom(memory)
 {
-    const randomInt = getRandomInt(3);
+    const randomInt = getRandomInt(5);
     var ret;
+
 
     if (randomInt == 0)
         ret = takeElement(memory, "TB");
-    else if (randomInt == 1)
+    else if (randomInt == 1 || randomInt == 3)
         ret = takeElement(memory, "TR");
-    else if (randomInt == 2)
+    else if (randomInt == 2 || randomInt == 4)
         ret = takeElement(memory, "TL");
-    else if (randomInt == 3)
-        ret = takeElement(memory, "TLR");
+    //else if (randomInt == 3)
+    //    ret = takeElement(memory, "TLR");
 
     return ret;
 }

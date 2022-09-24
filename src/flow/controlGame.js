@@ -1,19 +1,34 @@
 
 
 function rotationCamera(mainScene, angle) {
+    console.log("Siamo dentro rotationCamera");
     mainScene.pause = true;
     mainScene.room.enabled = false;
     const group = new TWEEN.Group();
-    createAnimationTransitionRoomTween(mainScene.wallsA, mainScene.room.obj, group, angle);
-    createAnimationTransitionRoomTween(mainScene.elementsA, mainScene.room.obj, group, angle);
-    createAnimationTransitionRoomTween(mainScene.obstaclesA, mainScene.room.obj, group, angle);
+    createAnimationTransitionRoomTween(mainScene.wallsA, mainScene.cat ,group, angle);
+    createAnimationTransitionRoomTween(mainScene.elementsA, mainScene.cat , group, angle);
+    createAnimationTransitionRoomTween(mainScene.obstaclesA,  mainScene.cat , group, angle);
+    //createAnimationTransitionRoomTween([mainScene.cat], mainScene.room , group, angle);
     mainScene.room = null;
     const tween = new TWEEN.Tween(mainScene, group).onComplete(function () {
+        var diff;
+        mainScene.wallsA.forEach(element => {
+            element.obj.position.x = 0;
+        });
+        mainScene.elementsA.forEach(element => {
+            diff = element.obj.position.x;
+            element.obj.position.x = 0;
+        });
+        mainScene.obstaclesA.forEach(element => {
+            element.obj.position.x = 0;
+        });
         mainScene.pause = false;
         for (var i = 0; i < mainScene.tweenGA.length; i++) {
             if (mainScene.tweenGA[i] == group)
                 mainScene.tweenGA.splice(i, 1);
         }
+        if ((diff < 0 && mainScene.cat.obj.position.x < 0) ||(diff > 0 && mainScene.cat.obj.position.x > 0))
+            mainScene.cat.obj.position.x -= diff;
         group.removeAll();
     });
     tween.to({pause: true}, 110).start();

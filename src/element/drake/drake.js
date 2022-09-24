@@ -645,6 +645,8 @@ function createDrake() {
         checkIntersection: function (obstacle) {
             const box3Obs = new THREE.Box3();
             const box3Cat = new THREE.Box3();
+            const box3CatBody = new THREE.Box3();
+
             for (var i = 0; i < obstacle.intersectionMesh.length; i++) {
               var obs = obstacle.obj;
               for (var j = 0; j < obstacle.intersectionMesh[i].length; j++) {
@@ -655,12 +657,17 @@ function createDrake() {
       
               const vector = new THREE.Vector3();
               this.head.getWorldPosition(vector);
+              this.body.getWorldPosition(vector);
               box3Obs.copy( obs.geometry.boundingBox ).applyMatrix4( obs.matrixWorld );
               box3Cat.copy( this.head.geometry.boundingBox ).applyMatrix4( this.head.matrixWorld );
-      
+              box3CatBody.copy(this.body.geometry.boundingBox).applyMatrix4( this.body.matrixWorld );
+              
               box3Cat.intersect(box3Obs);
               if (!box3Cat.isEmpty())
                 return true;
+                box3CatBody.intersect(box3Obs);
+                if (!box3CatBody.isEmpty())
+                  return true;
             }
             return false;
         },
