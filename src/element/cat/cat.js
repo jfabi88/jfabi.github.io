@@ -195,7 +195,7 @@ function createTail(width, height, depth, texture) {
   const cat = new THREE.Object3D();
   cat.name = "cat";
   const mixers = [];
-  const actions = { jump: [], slip: [] };
+  const actions = { jump: [], slip: [] , walk: []};
 
   const head = createCube(
     headW,
@@ -203,6 +203,7 @@ function createTail(width, height, depth, texture) {
     headD,
     createHeadMaterial(catTexture[1], catTexture[2], catTexture[3])
   );
+  head.layers.set(1);
   head.position.set(0, bodyH / 2, bodyD / 2);
 
   const eye1 = createCube(eyeW, eyeH, eyeD, createEyeMaterial(catTexture[4]));
@@ -238,6 +239,8 @@ function createTail(width, height, depth, texture) {
     bodyD,
     createBodyMaterial(catTexture[0])
   );
+
+  body.layers.set(1);
 
   var tail = createTail(tailW, tailH, tailD, catTexture[0]);
   tail.position.set(0, bodyH / 2 - tailH / 2, -((bodyD + tailD) / 2));
@@ -298,6 +301,9 @@ function createTail(width, height, depth, texture) {
 
   body.position.y = (bodyH / 2 + (legH - 1.5) + footH - headH - earH) / 2;
 
+  head.name = "head_cat";
+  body.name = "body_cat";
+
   var ret = {
     obj: cat,
     center: center,
@@ -318,6 +324,7 @@ function createTail(width, height, depth, texture) {
     height: earH + headH + bodyH / 2 + (legH - 1.5) + footH,
     depth: headD / 2 + bodyW + tailW,
     mixers: mixers,
+    type: "Cat",
     playAnimation: function (anim, loop, restart = false) {
       if (
         actions[anim][0].time == 0 ||
@@ -361,6 +368,21 @@ function createTail(width, height, depth, texture) {
           return true;
       }
       return false;
+    },
+    setShadow: function (bool) {
+      this.head.castShadow = bool;
+      this.ear1.castShadow = bool;
+      this.ear2.castShadow = bool;
+      this.nose.castShadow = bool;
+      this.body.castShadow = bool;
+      this.leg1.castShadow = bool;
+      this.leg2.castShadow = bool;
+      this.leg3.castShadow = bool;
+      this.leg4.castShadow = bool;
+      this.foot1.castShadow = bool;
+      this.foot2.castShadow = bool;
+      this.foot3.castShadow = bool;
+      this.foot4.castShadow = bool;
     }
   };
 

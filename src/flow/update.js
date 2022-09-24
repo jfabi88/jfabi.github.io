@@ -37,7 +37,6 @@ function addRoom(memory, lastObj, wallsA, decorationA, spawn) {
                     light.available = false;
                     light.obj.position.x = wall.obj.position.x;
                     light.obj.position.z = wall.obj.position.z;
-                    console.log("Luce aggiunta");
                     decorationA.push(light);
                 }
             }
@@ -77,8 +76,6 @@ function addTransitionRoom(mainScene, memory, elementsArray) {
                     i--;
                 }
             }
-            if (elem.type == "TB" || elem.type == "TR" || elem.type == "TL" || elem.type == "TLR")
-                console.log("E' stato aggiunto una tra")
             toMove.push(elem);
             if (flag)
                 mainScene.distance += 1;

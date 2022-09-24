@@ -1,6 +1,6 @@
 
  function createJumpAnimation(cat, mixers, actions) {
-    const times = [0, 0.4, 0.6, 1.0];
+    const times = [0, 0.2, 0.8, 1.0];
     const values = [cat.center.position.x, cat.center.position.y, cat.center.position.z, cat.center.position.x, cat.center.position.y + 15, cat.center.position.z, cat.center.position.x, cat.center.position.y + 15, cat.center.position.z, cat.center.position.x, cat.center.position.y, cat.center.position.z];
     const rP1 = rotateOnPoint(cat.leg1, new THREE.Vector3(3.01, -2.25, 5.26), new THREE.Vector3(1, 0, 0), -90 * THREE.MathUtils.DEG2RAD);
     const rP2 = rotateOnPoint(cat.leg2, new THREE.Vector3(-3.01, -2.25, 5.26), new THREE.Vector3(1, 0, 0), -90 * THREE.MathUtils.DEG2RAD);

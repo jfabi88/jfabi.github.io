@@ -1,11 +1,18 @@
 
 //addEventListener('DOMContentLoaded', (event) => {init();});
 
+var cat = null;
+var drake = null;
+
 init();
 
 function setInitScene() {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(128 / 256, 113 / 256, 130 / 256);
+
+    const center = new THREE.Object3D();
+    center.position.z = -60;
+    scene.add(center);
 
     var aLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(aLight);
@@ -19,8 +26,22 @@ function setInitScene() {
     light.shadow.camera.near = 0.5; // default
     light.shadow.camera.far = 500; // default
 
+    scene.add(light.target);
     scene.add(light);
 
+    var light2 = new THREE.DirectionalLight(0xffffff, 0.6);
+    light2.position.set( 50 + 5 , 20, 0 - 60 - 10);
+    light2.target.position.set(50 - 5, 0, -60 + 10);
+    light2.castShadow = true;
+
+    light2.shadow.mapSize.width = 512; // default
+    light2.shadow.mapSize.height = 512; // default
+    light2.shadow.camera.near = 0.5; // default
+    light2.shadow.camera.far = 500; // default
+
+    scene.add(light2.target);
+    scene.add(light2);
+  
     THREE.ShaderLib[ 'lambert' ].fragmentShader = THREE.ShaderLib[ 'lambert' ].fragmentShader.replace(
 
         `vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;`,
@@ -40,7 +61,7 @@ function setInitScene() {
     const plane = new THREE.Mesh(geometryPlane, materialPlane);
     plane.rotateX(-Math.PI / 2);
     plane.receiveShadow = true;
-    plane.position.y = -9;
+    //plane.position.y = -9;
 
     scene.add(plane);
 
@@ -69,22 +90,6 @@ function setGameScene() {
     return scene;
 }
 
-function setShadowCat(cat , bool) {
-    cat.head.castShadow = bool;
-    cat.ear1.castShadow = bool;
-    cat.ear2.castShadow = bool;
-    cat.nose.castShadow = bool;
-    cat.body.castShadow = bool;
-    cat.leg1.castShadow = bool;
-    cat.leg2.castShadow = bool;
-    cat.leg3.castShadow = bool;
-    cat.leg4.castShadow = bool;
-    cat.foot1.castShadow = bool;
-    cat.foot2.castShadow = bool;
-    cat.foot3.castShadow = bool;
-    cat.foot4.castShadow = bool;
-}
-
 function changePosition(position, catdirection, speed, limit) {
     position.addScaledVector(catdirection, speed);
     if (position.x >= limit[0])
@@ -101,9 +106,9 @@ function stop(mainScene) {
 }
 
 function runGame(mainScene, catdirection, memory, delta, score) {
-    mainScene.tweenGA.forEach(group => {
-      group.update();
-    });
+  mainScene.tweenGA.forEach(group => {
+    group.update();
+  });
     if (mainScene.cat != null && mainScene.pause == false) {
       mainScene.mixers.forEach((mixer) => {
         mixer.update(delta);
@@ -115,18 +120,25 @@ function runGame(mainScene, catdirection, memory, delta, score) {
         mainScene.catspeed += 5.0;
       updateScene(mainScene, memory, delta);
       mainScene.room = checkIn(mainScene.cat, mainScene.elementsA, mainScene.wallsA);
-      if (mainScene.room == null) {
-        console.log("Non siamo nella stanza")
-        stop(mainScene);
-      }
+      //if (mainScene.room == null) {
+      //  console.log("Non siamo nella stanza")
+      //  stop(mainScene);
+      //}
       if (mainScene.room && mainScene.room.type == "Room") {
         checkAnimation(mainScene.room.obstacles, mainScene.cat, mainScene.tweenGA);
       }
-      if (mainScene.room && mainScene.room.type == "Room" && checkIntersection(mainScene.room.obstacles, mainScene.cat))
+      if (mainScene.room && checkIntersection(mainScene.room.obstacles, mainScene.cat))
             stop(mainScene);
         mainScene.score += 0.1;
         score.textContent = Math.floor(mainScene.score);
     }
+}
+
+function onPointerMove( event, pointer ) {
+
+  pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
 }
 
 function init() {
@@ -144,9 +156,9 @@ function init() {
       45,
       window.innerWidth / window.innerHeight,
       1,
-      100
+      200
     );
-    camera1.position.set(0, 0, 60);
+    camera1.position.set(0, 10, 60);
 
     const camera2 = new THREE.PerspectiveCamera(
         80,
@@ -156,6 +168,9 @@ function init() {
       );
     camera2.position.set(0, 40, 40);
 
+    camera1.layers.enableAll();
+    camera2.layers.enableAll();
+  
     const scene1 = setInitScene();
     const scene2 = setGameScene();
     var scene = scene1;
@@ -169,6 +184,7 @@ function init() {
     
     var mainScene = {
         scene: scene2,
+        scene1: scene1,
         cat: null,
         camera: camera,
         catspeed: 0,
@@ -191,6 +207,7 @@ function init() {
         heightRoom: 80,
         depthRoom: 120,
         start: 0,
+        targetAnimal: 1,
         mixers: [],
     };
 
@@ -206,15 +223,33 @@ function init() {
     loadTurnStileTexture(loaderGame);
     loadRoomTexture(loaderGame);
 
-    var cat = null;
     loadManagerCat.onLoad = () => {
         cat = createCat();
+        //console.log(cat.width, cat.height, cat.depth);
+        //cat = createDrake();
+        cat.obj.position.y = cat.height / 2;
+        cat.obj.position.z = 60;
+        //cat.mainScene = mainScene;
         cat.obj.rotateY(-Math.PI / 12);
-        setShadowCat(cat, true);
-        scene1.add(cat.obj);
+        cat.setShadow(true);
+        scene1.children[0].add(cat.obj);
 
         mainScene.cat = cat;
         cat.mixers.forEach((mixer) => {
+          mainScene.mixers.push(mixer);
+        });
+
+        drake = createDrake();
+        drake.obj.position.x = 50;
+        drake.obj.position.y = drake.height / 2;
+        drake.obj.position.z = 0;
+        //drake.mainScene = mainScene;
+        drake.obj.rotateY(-Math.PI / 12);
+        drake.setShadow(true);
+        scene1.children[0].add(drake.obj);
+        //drake.obj.visible = false;
+        //mainScene.drake = drake;
+        drake.mixers.forEach((mixer) => {
           mainScene.mixers.push(mixer);
         });
 
@@ -238,17 +273,21 @@ function init() {
             elem.textContent = mainScene.score;
             elem.style.visibility = "visible";
 
-            cat.obj.rotateY(Math.PI / 12);
-            cat.obj.rotation.y += 180 * THREE.MathUtils.DEG2RAD;
-            cat.obj.position.y += cat.height / 2;
-            cat.obj.position.z -= 10;
-            setShadowCat(cat, false);
-            scene1.remove(cat);
-            scene2.add(cat.obj);
+            scene1.children[0].remove(mainScene.cat.obj);
+            mainScene.cat.obj.rotateY(Math.PI / 12);
+            mainScene.cat.obj.position.x = 0;
+            mainScene.cat.obj.rotation.y = 180 * THREE.MathUtils.DEG2RAD;
+            mainScene.cat.obj.position.y = mainScene.cat.height / 2;
+            mainScene.cat.obj.position.z = -10;
+            if (mainScene.cat.type == "Drake")
+              mainScene.cat.playAnimation("walk", true);
+            mainScene.cat.setShadow(false);
+            scene2.add(mainScene.cat.obj);
 
             camera = camera2;
             scene = scene2;
 
+            mainScene.scene = scene2;
             mainScene.start += 1;
 
             elem = document.getElementById("pressStart");
@@ -268,6 +307,12 @@ function init() {
         console.log("Tasto restart premuto!");
     }
 
+    const raycaster = new THREE.Raycaster();
+    raycaster.layers.set(1);
+    const pointer = new THREE.Vector2();
+
+    window.addEventListener( 'pointermove', (e) => {onPointerMove(e, pointer)}, false);
+
     var clock = new THREE.Clock();
     var delta = 0;
     var catdirection = new THREE.Vector3(1, 0, 0);
@@ -279,6 +324,22 @@ function init() {
             //console.log(renderer.info.render.calls);
             //renderer.info.autoReset = false;
             //renderer.info.reset();
+        }
+        else
+        {
+          raycaster.setFromCamera( pointer, camera );
+
+          // calculate objects intersecting the picking ray
+          const intersects = raycaster.intersectObjects( scene.children );
+      
+          for ( let i = 0; i < intersects.length; i ++ ) {
+            if (intersects[i].object.name == "head_cat" || intersects[i].object.name == "body_cat")
+              mainScene.targetAnimal = 1;
+            else
+              mainScene.targetAnimal = 2;
+          }
+          if (intersects.length == 0)
+            mainScene.targetAnimal = 0;
         }
         renderer.render(scene, camera);
         requestAnimationFrame(render);

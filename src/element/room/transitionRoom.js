@@ -1,5 +1,7 @@
 
 class TransitionRoom extends Block {
+    intersectionMesh = [];
+    obstacles = [this];
     constructor(obj, w, h, d, type) {
         super(obj, w, h, d, type);
         this.orientationPoints = [6, 7, 8];
@@ -122,7 +124,7 @@ function createTransitionRoomLeftRight(width, height, depth) {
     const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TRL");
     ret.enabled = true;
     ret.connectionPoints = [9, 10, 11, 12, 13, 14];
-
+    ret.intersectionMesh = [[1]];
     return ret;
 }
 
@@ -183,7 +185,7 @@ function createTransitionRoomLeftRight(width, height, depth) {
     
     const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TL");
     ret.enabled = true;
-    
+    ret.intersectionMesh = [[1], [3]];
     return ret;
 }
 
@@ -243,7 +245,7 @@ function createTransitionRoomLeftRight(width, height, depth) {
 
     const ret = new TransitionRoom(obj, widthTR, heightTR, depthTR, "TR");
     ret.enabled = true;
-    
+    ret.intersectionMesh = [[1], [2]];
     return ret;
 }
 

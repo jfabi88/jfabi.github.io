@@ -73,4 +73,23 @@ function setControl(document, window, renderer, scene)
         onKeyPress(e.key, scene);
     }, false);
     window.addEventListener( "resize", function() { onWindowResize(scene.camera, window, renderer)}, false );
+
+    window.addEventListener('click', (event) => {
+        if (scene.start == 1 && scene.targetAnimal == 1 && scene.cat.type == "Drake") {
+            console.log("vogliamo il gatto");
+            scene.scene1.children[0].rotation.y = 0;
+            scene.scene1.children[0].children[1].rotateY(-Math.PI / 2);
+            scene.scene1.children[0].children[0].rotateY(-Math.PI / 2);
+            scene.cat = cat;
+            //scene.targetAnimal = 1;
+        }
+        else if (scene.start == 1 && scene.targetAnimal == 2 && scene.cat.type == "Cat") {
+            console.log("vogliamo il drago");
+            scene.scene1.children[0].rotation.y = -Math.PI / 2;
+            scene.scene1.children[0].children[1].rotateY(Math.PI / 2);
+            scene.scene1.children[0].children[0].rotateY(Math.PI / 2);
+            scene.cat = drake;
+            //scene.targetAnimal = 2;
+        }
+    });
 }

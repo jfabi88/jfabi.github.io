@@ -11,7 +11,7 @@ const geometryBar = [];
 const materialBar = [];
 
 function createGeoMatBar() {
-    const geometryTop = createGeometryCube([1, 0, 0, 0, 1, 0], 7, 5.0, 2.5);
+    const geometryTop = createGeometryCube([1, 0, 0, 0, 1, 0], 7, 2.0, 2.5);
     const materialTop = new THREE.MeshPhongMaterial({color: "rgb(40, 40, 40)"});
 
     geometryBar.push(geometryTop);
@@ -24,6 +24,7 @@ function createObjectBar() {
     const top = new THREE.Mesh(geometryBar[0], materialBar[0]);
 
     obj.add(top);
+    obj.position.y = 2;
 
     const ret = new Bar(obj, 6, 1, 2.5)
     ret.intersectionMesh = [[0]];
