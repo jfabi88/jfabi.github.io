@@ -83,7 +83,14 @@ function takeElement(elementMemory, type) {
     }
 }
 
- function reset(mainScene, memory) {
+function stop(mainScene) {
+    const menu = document.getElementById("menu");
+    menu.style.visibility = "visible";
+    mainScene.pause = true;
+    mainScene.died = true;
+}
+
+function reset(mainScene, memory) {
     const room = memory.roomA[19];
     const conPoint = room.getConnectionPoints()[0];
     for (var i = 0; i < 19; i++) {
@@ -105,6 +112,8 @@ function takeElement(elementMemory, type) {
     mainScene.cat.obj.position.x = 0;
     mainScene.cat.stopAnimation("slip");
     mainScene.cat.stopAnimation("jump");
+    mainScene.cat.stopAnimation("walk");
+    mainScene.cat.stopAnimation("tile");
     mainScene.room = null;
     mainScene.lastObj = [];
     mainScene.wallsA = [];

@@ -195,7 +195,7 @@ function createTail(width, height, depth, texture) {
   const cat = new THREE.Object3D();
   cat.name = "cat";
   const mixers = [];
-  const actions = { jump: [], slip: [] , walk: []};
+  const actions = { jump: [], slip: [] , walk: [], tile: []};
 
   const head = createCube(
     headW,
@@ -327,10 +327,16 @@ function createTail(width, height, depth, texture) {
     type: "Cat",
     playAnimation: function (anim, loop, restart = false) {
       if (
-        actions[anim][0].time == 0 ||
+        actions[anim].length && (actions[anim][0].time == 0 ||
         actions[anim][0].time > 0.6 ||
-        restart == true
+        restart == true)
       ) {
+        actions["slip"].forEach((action) => {
+          action.stop();   
+        });
+        actions["jump"].forEach((action) => {
+          action.stop();   
+        });
         if (loop == true) {
           actions[anim].forEach((action) => {
             action.play().reset();

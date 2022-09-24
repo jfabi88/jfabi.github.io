@@ -67,29 +67,116 @@ function onKeyPress(key, mainScene) {
 }
 
 
-function setControl(document, window, renderer, scene)
+function setControl(document, window, renderer, mainScene, memory)
 {
     document.addEventListener('keypress', (e) => {
-        onKeyPress(e.key, scene);
+        onKeyPress(e.key, mainScene);
     }, false);
-    window.addEventListener( "resize", function() { onWindowResize(scene.camera, window, renderer)}, false );
+    window.addEventListener( "resize", function() { onWindowResize(mainScene.camera, window, renderer)}, false );
 
     window.addEventListener('click', (event) => {
-        if (scene.start == 1 && scene.targetAnimal == 1 && scene.cat.type == "Drake") {
-            console.log("vogliamo il gatto");
-            scene.scene1.children[0].rotation.y = 0;
-            scene.scene1.children[0].children[1].rotateY(-Math.PI / 2);
-            scene.scene1.children[0].children[0].rotateY(-Math.PI / 2);
-            scene.cat = cat;
+        if (mainScene.start == 1 && mainScene.targetAnimal == 1 && mainScene.cat.type == "Drake") {
+            mainScene.scene1.children[0].rotation.y = 0;
+            mainScene.scene1.children[0].children[1].rotateY(-Math.PI / 2);
+            mainScene.scene1.children[0].children[0].rotateY(-Math.PI / 2);
+            mainScene.cat = cat;
             //scene.targetAnimal = 1;
         }
-        else if (scene.start == 1 && scene.targetAnimal == 2 && scene.cat.type == "Cat") {
-            console.log("vogliamo il drago");
-            scene.scene1.children[0].rotation.y = -Math.PI / 2;
-            scene.scene1.children[0].children[1].rotateY(Math.PI / 2);
-            scene.scene1.children[0].children[0].rotateY(Math.PI / 2);
-            scene.cat = drake;
+        else if (mainScene.start == 1 && mainScene.targetAnimal == 2 && mainScene.cat.type == "Cat") {
+            mainScene.scene1.children[0].rotation.y = -Math.PI / 2;
+            mainScene.scene1.children[0].children[1].rotateY(Math.PI / 2);
+            mainScene.scene1.children[0].children[0].rotateY(Math.PI / 2);
+            mainScene.cat = drake;
             //scene.targetAnimal = 2;
         }
     });
+
+    document.getElementById("restart").onclick = function () {
+        const menu = document.getElementById("menu");
+        menu.style.visibility = "hidden";
+        reset(mainScene, memory);
+        score.textContent = 0;
+        createWay(mainScene, memory);
+        mainScene.cat.playAnimation("walk", true);
+        mainScene.cat.playAnimation("tile", true);
+        console.log("Tasto restart premuto!");
+    };
+
+    document.getElementById("start").onclick = function () {
+        if (mainScene.cat != null) {
+            var elem = document.getElementById("page");
+            elem.style.display = "none";
+            
+            elem = document.getElementById("score");
+            elem.textContent = mainScene.score;
+            elem.style.visibility = "visible";
+
+            scene1.children[0].remove(mainScene.cat.obj);
+            mainScene.cat.obj.rotateY(Math.PI / 12);
+            mainScene.cat.obj.position.x = 0;
+            mainScene.cat.obj.rotation.y = 180 * THREE.MathUtils.DEG2RAD;
+            mainScene.cat.obj.position.y = mainScene.cat.height / 2;
+            mainScene.cat.obj.position.z = -10;
+            mainScene.cat.playAnimation("walk", true);
+            //mainScene.cat.playAnimation("shake", true);
+            mainScene.cat.setShadow(false);
+            scene2.add(mainScene.cat.obj);
+
+            createWay(mainScene, memory);
+
+            camera = camera2;
+            scene = scene2;
+
+            drake.stopAnimation("shake");
+            mainScene.scene = scene2;
+            mainScene.start += 1;
+
+            elem = document.getElementById("pressStart");
+            elem.style.visibility = "visible";
+
+            elem = document.getElementById("back");
+            elem.style.visibility = "visible";
+
+            console.log("Tasto start premuto!");
+        }
+    };
+
+    document.getElementById("back").onclick = function () {
+        reset(mainScene, memory);
+
+        var elem = document.getElementById("pressStart");
+        elem.style.visibility = "hidden";
+        elem = document.getElementById("back");
+        elem.style.visibility = "hidden";
+        elem = document.getElementById("score");
+        elem.style.visibility = "hidden";
+        elem = document.getElementById("page");
+        elem.style.display = "block";
+        elem = document.getElementById("menu");
+        menu.style.visibility = "hidden";
+
+        drake.playAnimation("shake", true);
+        scene2.remove(mainScene.cat.obj);
+        scene1.children[0].rotation.y = 0;
+        scene1.children[0].add(mainScene.cat.obj);
+
+        cat.obj.position.y = cat.height / 2;
+        cat.obj.position.z = 60;
+        cat.obj.rotation.y = 0;
+        cat.obj.rotateY(-Math.PI / 12);
+
+        drake.obj.position.x = 50;
+        drake.obj.position.y = drake.height / 2 - 0;
+        drake.obj.position.z = 0;
+        drake.obj.rotation.y = 0;
+        drake.obj.rotateY(-Math.PI / 12);
+
+        mainScene.cat.setShadow(true);
+        mainScene.start -= 1;
+
+        mainScene.cat = cat;
+
+        camera = camera1;
+        scene = scene1;
+    }
 }

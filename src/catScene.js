@@ -3,6 +3,12 @@
 
 var cat = null;
 var drake = null;
+var scene;
+var scene1;
+var scene2;
+var camera;
+var camera1;
+var camera2;
 
 init();
 
@@ -16,9 +22,11 @@ function setInitScene() {
 
     var aLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(aLight);
-    var light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(1, 10, 8);
-    light.target.position.set(0, 0, 0);
+    var light = new THREE.DirectionalLight(0xffffff, 0.4);
+    light.position.set(-16, 10, 16);
+    const target = new THREE.Object3D();
+    target.position.set(8, 0, -8);
+    light.target = target;
     light.castShadow = true;
 
     light.shadow.mapSize.width = 512; // default
@@ -30,8 +38,10 @@ function setInitScene() {
     scene.add(light);
 
     var light2 = new THREE.DirectionalLight(0xffffff, 0.6);
-    light2.position.set( 50 + 5 , 20, 0 - 60 - 10);
-    light2.target.position.set(50 - 5, 0, -60 + 10);
+    light2.position.set( 50 , 20, 0 - 60 - 10);
+    const targetLight2 = new THREE.Object3D();
+    targetLight2.position.set(50, 0, -60 + 10);
+    light2.target = targetLight2;
     light2.castShadow = true;
 
     light2.shadow.mapSize.width = 512; // default
@@ -41,6 +51,21 @@ function setInitScene() {
 
     scene.add(light2.target);
     scene.add(light2);
+
+    var light3 = new THREE.DirectionalLight(0xffffff, 0.6);
+    light3.position.set( -50 + 10, 20, - 60 - 10);
+    const targetLight3 = new THREE.Object3D();
+    targetLight3.position.set(-50 - 10, 0, -60 + 10);
+    light3.target = targetLight3;
+    light3.castShadow = true;
+
+    light3.shadow.mapSize.width = 512; // default
+    light3.shadow.mapSize.height = 512; // default
+    light3.shadow.camera.near = 0.5; // default
+    light3.shadow.camera.far = 500; // default
+  
+    scene.add(light3.target);
+    scene.add(light3);
   
     THREE.ShaderLib[ 'lambert' ].fragmentShader = THREE.ShaderLib[ 'lambert' ].fragmentShader.replace(
 
@@ -54,7 +79,7 @@ function setInitScene() {
     
     );
 
-    const geometryPlane = new THREE.PlaneGeometry(100, 100);
+    const geometryPlane = new THREE.PlaneGeometry(200, 150);
     const materialPlane = new THREE.MeshLambertMaterial({color: 0x807182,})
     materialPlane.defines = materialPlane.defines || {};
     materialPlane.defines.CUSTOM = "";
@@ -72,7 +97,7 @@ function setGameScene() {
     const scene = new THREE.Scene(); 
     scene.background = new THREE.Color("rgb(255, 255, 255)");
 
-    const light = new THREE.DirectionalLight(0xffffff, 0.1); // soft white light
+    const light = new THREE.DirectionalLight(0xffffff, 0.2); // soft white light
     light.position.set(150, 50, -100);
     light.target.position.set(0, 0, 0);
     scene.add(light);
@@ -96,13 +121,6 @@ function changePosition(position, catdirection, speed, limit) {
       position.x = limit[0];
     else if (position.x <= limit[1])
       position.x = limit[1];
-}
-
-function stop(mainScene) {
-    const menu = document.getElementById("menu");
-    menu.style.visibility = "visible";
-    mainScene.pause = true;
-    mainScene.died = true;
 }
 
 function runGame(mainScene, catdirection, memory, delta, score) {
@@ -152,7 +170,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
   
-    var camera1 = new THREE.PerspectiveCamera(
+    camera1 = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
       1,
@@ -160,7 +178,7 @@ function init() {
     );
     camera1.position.set(0, 10, 60);
 
-    const camera2 = new THREE.PerspectiveCamera(
+    camera2 = new THREE.PerspectiveCamera(
         80,
         window.innerWidth / window.innerHeight,
         0.1, 
@@ -171,10 +189,10 @@ function init() {
     camera1.layers.enableAll();
     camera2.layers.enableAll();
   
-    const scene1 = setInitScene();
-    const scene2 = setGameScene();
-    var scene = scene1;
-    var camera = camera1;
+    scene1 = setInitScene();
+    scene2 = setGameScene();
+    scene = scene1;
+    camera = camera1;
 
     var memory = {
         obstacleA: [],
@@ -241,10 +259,11 @@ function init() {
 
         drake = createDrake();
         drake.obj.position.x = 50;
-        drake.obj.position.y = drake.height / 2;
+        drake.obj.position.y = drake.height / 2 - 0;
         drake.obj.position.z = 0;
         //drake.mainScene = mainScene;
         drake.obj.rotateY(-Math.PI / 12);
+        //drake.obj.rotateY(Math.PI);
         drake.setShadow(true);
         scene1.children[0].add(drake.obj);
         //drake.obj.visible = false;
@@ -252,6 +271,8 @@ function init() {
         drake.mixers.forEach((mixer) => {
           mainScene.mixers.push(mixer);
         });
+        drake.playAnimation("shake", true);
+        drake.playAnimation("tile", true);
 
         mainScene.start += 1;
     }
@@ -259,53 +280,11 @@ function init() {
     loadManagerGame.onLoad = () => {
         createAllObject(mainScene, memory.roomA, memory.obstacleA, memory.decorationA);
         createLimit(mainScene);
-        createWay(mainScene, memory);
     }
 
-    setControl(document, window, renderer, mainScene);
-
-    document.getElementById("start").onclick = function () {
-        if (mainScene.cat != null) {
-            var elem = document.getElementById("page");
-            elem.style.display = "none";
-            
-            elem = document.getElementById("score");
-            elem.textContent = mainScene.score;
-            elem.style.visibility = "visible";
-
-            scene1.children[0].remove(mainScene.cat.obj);
-            mainScene.cat.obj.rotateY(Math.PI / 12);
-            mainScene.cat.obj.position.x = 0;
-            mainScene.cat.obj.rotation.y = 180 * THREE.MathUtils.DEG2RAD;
-            mainScene.cat.obj.position.y = mainScene.cat.height / 2;
-            mainScene.cat.obj.position.z = -10;
-            if (mainScene.cat.type == "Drake")
-              mainScene.cat.playAnimation("walk", true);
-            mainScene.cat.setShadow(false);
-            scene2.add(mainScene.cat.obj);
-
-            camera = camera2;
-            scene = scene2;
-
-            mainScene.scene = scene2;
-            mainScene.start += 1;
-
-            elem = document.getElementById("pressStart");
-            elem.style.visibility = "visible";
-            console.log("Tasto start premuto!");
-        }
-    };
+    setControl(document, window, renderer, mainScene, memory);
 
     var score = document.getElementById("score");
-
-    document.getElementById("restart").onclick = function () {
-        const menu = document.getElementById("menu");
-        menu.style.visibility = "hidden";
-        reset(mainScene, memory);
-        score.textContent = 0;
-        createWay(mainScene, memory);
-        console.log("Tasto restart premuto!");
-    }
 
     const raycaster = new THREE.Raycaster();
     raycaster.layers.set(1);
@@ -318,8 +297,8 @@ function init() {
     var catdirection = new THREE.Vector3(1, 0, 0);
 
     function render() {
+        delta = clock.getDelta(); //deve stare fuori dalla pausa
         if (scene == scene2) {
-            delta = clock.getDelta(); //deve stare fuori dalla pausa
             runGame(mainScene, catdirection, memory, delta, score);
             //console.log(renderer.info.render.calls);
             //renderer.info.autoReset = false;
@@ -327,6 +306,12 @@ function init() {
         }
         else
         {
+          if (mainScene.cat != null) {
+            mainScene.mixers.forEach((mixer) => {
+              mixer.update(delta);
+            });
+          }
+
           raycaster.setFromCamera( pointer, camera );
 
           // calculate objects intersecting the picking ray

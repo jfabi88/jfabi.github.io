@@ -33,6 +33,59 @@ function createRotationWingsDrake(drake, group) {
     tween12.start();
 }
 
+function createRotationTile(drake, mixers, actions) {
+
+    const times = [0, 0.5, 1.0, 1.5, 2.0];
+    const times2 = [0, 0.8, 1.6, 2.4, 3.2];
+    const times3 = [0, 0.5, 1.0];
+    //const dcq = drake.obj.children[0].children[0].children[4].quaternion;
+    const values = [
+        0, 0.383, 0, 0.924,
+        -0.383, 0.0, 0, 0.924,
+        0, -0.383, 0, 0.924,
+        0.383, 0.0, 0, 0.924,
+        0, 0.383, 0, 0.924,
+    ]
+    const length = -1;
+
+    const positionKf = new THREE.QuaternionKeyframeTrack(".quaternion", times, values);
+    const tracks = [positionKf];
+    const clipSlipC = new THREE.AnimationClip("tile", length, tracks);
+    const mixerC = new THREE.AnimationMixer(drake.obj.children[0].children[0].children[4]);
+    const actionC = mixerC.clipAction(clipSlipC);
+
+    const values2 = [
+        0, 0.707, 0, 0.707,
+        -0.707, 0.0, 0, 0.707,
+        0, -0.707, 0, 0.707,
+        0.707, 0.0, 0, 0.707,
+        0, 0.707, 0, 0.707,
+    ];
+
+    const positionKf2 = new THREE.QuaternionKeyframeTrack(".quaternion", times2, values2);
+    const tracks2 = [positionKf2];
+    const clipSlipC2 = new THREE.AnimationClip("tile", length, tracks2);
+    const mixerC2 = new THREE.AnimationMixer(drake.obj.children[0].children[0].children[4].children[0].children[0]);
+    const actionC2 = mixerC2.clipAction(clipSlipC2);
+
+    const values3 = [
+        0, 0.383, 0, 0.924,
+        0, 0.0, 0, 1,
+        0, -0.383, 0, 0.924,
+    ];
+
+    const positionKf3 = new THREE.QuaternionKeyframeTrack(".quaternion", times3, values3);
+    const tracks3 = [positionKf3];
+    const clipSlipC3 = new THREE.AnimationClip("tile", length, tracks3);
+    const mixerC3 = new THREE.AnimationMixer(drake.obj.children[0].children[0].children[4].children[0].children[0].children[0].children[0]);
+    const actionC3 = mixerC3.clipAction(clipSlipC3);
+    
+    mixers.push(mixerC, mixerC2, mixerC3);
+    var toPush = [];
+    toPush.push(actionC, actionC2, actionC3);
+    actions["tile"] = toPush;
+}
+
 function createAnimationWalking(drake, mixers, actions) {
     
     const times = [0, 0.25, 0.5, 0.75, 1.0];
@@ -46,13 +99,13 @@ function createAnimationWalking(drake, mixers, actions) {
         leg1.x, leg1.y, leg1.z,
         leg1.x, leg1.y, leg1.z - 2,
         leg1.x, leg1.y, leg1.z - 4,
-        leg1.x, leg1.y + 4, leg1.z - 2,
+        leg1.x, leg1.y + 2, leg1.z - 2,
         leg1.x, leg1.y, leg1.z,
     ];
 
     const valuesL2 = [
         leg2.x, leg2.y, leg2.z,
-        leg2.x, leg2.y + 4, leg2.z + 2,
+        leg2.x, leg2.y + 2, leg2.z + 2,
         leg2.x, leg2.y, leg2.z + 4,
         leg2.x, leg2.y, leg2.z + 2,
         leg2.x, leg2.y, leg2.z,
@@ -62,13 +115,13 @@ function createAnimationWalking(drake, mixers, actions) {
         leg3.x, leg3.y, leg3.z,
         leg3.x, leg3.y, leg3.z - 2,
         leg3.x, leg3.y, leg3.z - 4,
-        leg3.x, leg3.y + 4, leg3.z - 2,
+        leg3.x, leg3.y + 2, leg3.z - 2,
         leg3.x, leg3.y, leg3.z,
     ];
 
     const valuesL4 = [
         leg4.x, leg4.y, leg4.z,
-        leg4.x, leg4.y + 4, leg4.z + 2,
+        leg4.x, leg4.y + 2, leg4.z + 2,
         leg4.x, leg4.y, leg4.z + 4,
         leg4.x, leg4.y, leg4.z + 2,
         leg4.x, leg4.y, leg4.z,
@@ -239,55 +292,73 @@ function createDrakeJumpAnimation(drake, mixers, actions) {
     actions["jump"] = toPush;
 }
 
-function drakeJump(drake, group) {
-    var tween1;
-    var tween2;
-    var tween3;
-    var tween4;
+function createDrakeAnimationHead(drake, mixers, actions) {
+    const times = [0, 0.3, 0.5, 0.7, 1.0, 1.3, 1.5, 1.7, 2.0];
+    const timesW = [0, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0, 3.0];
 
-    const center = drake.obj.children[0];
-    tween1 = new TWEEN.Tween(center.position, group);
-    tween1.to({y: 8}, 100);
+    const dcq = drake.center.children[1].quaternion;
+    const rw1 = drake.obj.children[0].children[0].children[2].quaternion;
+    const rw2 = drake.obj.children[0].children[0].children[3].quaternion;
 
-    tween2 = new TWEEN.Tween(center.position, group);
-    tween2.to({y: 8}, 800);
+    const values = [
+        dcq.x, dcq.y, dcq.z, dcq.w,
+        -0.023, -0.172, 0.129, 0.976,
+        -0.018, -0.138, 0.129, 0.982,
+        -0.023, -0.172, 0.129, 0.976,
+        dcq.x, dcq.y, dcq.z, dcq.w,
+        -0.023, 0.172, -0.129, 0.958,
+        -0.018, 0.138, -0.129, 0.982,
+        -0.023, 0.172, -0.129, 0.958,
+        dcq.x, dcq.y, dcq.z, dcq.w,
+    ];
 
-    tween3 = new TWEEN.Tween(center.position, group);
-    tween3.to({y: 0}, 100);
+    const length = -1;
 
-    tween4 = new TWEEN.Tween(center.rotation, group);
-    tween4.to({x: [-Math.PI / 6, 0]}, 1000);
+    const positionKf = new THREE.VectorKeyframeTrack(".quaternion", times, values);
+    const tracks = [positionKf];
+    const clipSlipC = new THREE.AnimationClip("slipC", length, tracks);
+    const mixerC = new THREE.AnimationMixer(drake.center.children[1]);
+    const actionC = mixerC.clipAction(clipSlipC);
 
-    tween1.chain(tween2);
-    tween2.chain(tween3);
+    const valuesWR1 = [
+        rw1.x, rw1.y, rw1.z, rw1.w,
+        rw1.x -0.383, rw1.y, rw1.z, 0.924,
+        rw1.x, rw1.y, rw1.z,rw1.w, 
+        rw1.x -0.383, rw1.y, rw1.z, 0.924,
+        rw1.x, rw1.y, rw1.z, rw1.w, 
+        rw1.x -0.383, rw1.y, rw1.z, 0.924,
+        rw1.x, rw1.y, rw1.z, rw1.w,
+        rw1.x, rw1.y, rw1.z, rw1.w,
+    ];
 
-    var tween12;
-    var tween22;
+    const valuesWR2 = [
+        rw2.x, rw2.y, rw2.z, rw2.w,
+        rw2.x, rw2.y + 0.383, rw2.z, 0.924,
+        rw2.x, rw2.y, rw2.z, rw2.w,
+        rw2.x, rw2.y + 0.383, rw2.z, 0.924,
+        rw2.x, rw2.y, rw2.z, rw2.w,
+        rw2.x, rw2.y + 0.383, rw2.z, 0.924,
+        rw2.x, rw2.y, rw2.z, rw2.w,
+        rw2.x, rw2.y, rw2.z, rw2.w,
+    ];
 
-    var obj1 = drake.obj.children[0].children[0].children[2];
-    var obj2 = drake.obj.children[0].children[0].children[3];
+    const rotatioW1 = new THREE.VectorKeyframeTrack(".quaternion", timesW, valuesWR1);
+    const rotatioW2 = new THREE.VectorKeyframeTrack(".quaternion", timesW, valuesWR2);
 
-    tween12 = new TWEEN.Tween(obj1.rotation, group);
-    tween12.to({x: [-Math.PI / 4, 0]}, 200);
+    const tracksW1 = [rotatioW1];
+    const tracksW2 = [rotatioW2];
+    const clipJumpW = new THREE.AnimationClip("jumpC", length, tracksW1);
+    const clipJumpW2 = new THREE.AnimationClip("jumpC", length, tracksW2);
 
-    tween22 = new TWEEN.Tween(obj2.rotation, group);
-    tween22.to({y: [Math.PI / 4, 0]}, 200);
+    const mixerW1 = new THREE.AnimationMixer(drake.obj.children[0].children[0].children[2]);
+    const actionW1 = mixerW1.clipAction(clipJumpW);
+    const mixerW2 = new THREE.AnimationMixer(drake.obj.children[0].children[0].children[3]);
+    const actionW2 = mixerW2.clipAction(clipJumpW2);
 
-    tween12.start().repeat(4);
-    tween22.start().repeat(4);
-
-    tween1.start();
-    tween4.start();
-}
-
-function slip(drake, group) {
-    var tween1;
-    const times = [0, 0.5, 1.0];
-
-    const center = drake.obj.children[0];
-    tween1 = new TWEEN.Tween(center.position, group);
-    tween1.to({y: [- 2, - 2, -2, - 2, - 2, -2, 0]}, 1000);
-    tween1.start();
+    mixers.push(mixerC, mixerW1, mixerW2);
+    var toPush = [];
+    toPush.push(actionC, actionW1, actionW2);
+    actions["shake"] = toPush;
 }
 
 function createDrake() {
@@ -299,14 +370,14 @@ function createDrake() {
     const bodyDepth = 3;
 
     const legWidth = 1.5;
-    const legHeight = 1;
+    const legHeight = 0.5;
     const legDepth = 1.5;
 
-    const wingWidth = 1;
-    const wingHeight = 2;
+    const wingWidth = 1.5;
+    const wingHeight = 2.5;
     const wingDepth = 0.5;
 
-    const headWidth = 3.5;
+    const headWidth = 4;
     const headHeight = 3.5;
     const headDepth = 5;
 
@@ -324,6 +395,10 @@ function createDrake() {
     const innerEyeWidth = 0.25;
     const innerEyeHeight = 0.8;
     const innerEyeDepth = 0.8;
+
+    const tileWidth = 0.1;
+    const tileHeigth = 0.1;
+    const tileDepth = 0.75;
 
     const greenMaterial = new THREE.MeshPhongMaterial({color: "rgb(147, 197, 114)"});
     const greenMaterialT = new THREE.MeshPhongMaterial({color: "rgb(147, 197, 114)", side: THREE.DoubleSide});
@@ -383,10 +458,10 @@ function createDrake() {
     const leg3 = new THREE.Mesh(legGeometry, greenMaterial);
     const leg4 = new THREE.Mesh(legGeometry, greenMaterial);
 
-    placeObj(leg1, [2 + legWidth / 2, -(2.5 + legHeight / 2), 1 + legDepth / 2]);
-    placeObj(leg2, [2 + legWidth / 2, -(2.5 + legHeight / 2), -(1 + legDepth / 2)]);
-    placeObj(leg3, [-(2 + legWidth / 2), -(2.5 + legHeight / 2), 1 + legDepth / 2]);
-    placeObj(leg4, [-(2 + legWidth / 2), -(2.5 + legHeight / 2), -(1 + legDepth / 2)]);
+    placeObj(leg1, [1 + legWidth / 2, -(2.5 + legHeight / 2), 1 + legDepth / 2]);
+    placeObj(leg2, [1 + legWidth / 2, -(2.5 + legHeight / 2), -(1 + legDepth / 2)]);
+    placeObj(leg3, [-(1 + legWidth / 2), -(2.5 + legHeight / 2), 1 + legDepth / 2]);
+    placeObj(leg4, [-(1 + legWidth / 2), -(2.5 + legHeight / 2), -(1 + legDepth / 2)]);
 
     const center = new THREE.Object3D();
     obj.add(center);    //0
@@ -398,22 +473,61 @@ function createDrake() {
 
     const rotationCone = new THREE.Object3D();
     rotationCone.position.z = -bodyDepth / 2;
-    //rotationCone.rotation.y = -Math.PI / 4;
+
+    const geometryTile = new THREE.CylinderGeometry( tileWidth, tileHeigth, tileDepth, 6 );
+    const tile = new THREE.Mesh( geometryTile, yellowMaterial );
+    placeObj(tile, [0, 0, -tileDepth / 2], [Math.PI / 2, 0, 0]);
+    rotationCone.add(tile);
+
+    const rotationTile2 = new THREE.Object3D();
+    rotationTile2.position.y = -tileDepth / 2;
+    tile.add(rotationTile2);
+    const tile2 = new THREE.Mesh( geometryTile, yellowMaterial);
+    placeObj(tile2, [0, -tileDepth / 2, 0]);
+    rotationTile2.add(tile2);
+
+    const rotationTile3 = new THREE.Object3D();
+    rotationTile3.position.y = -tileDepth / 2;
+    tile2.add(rotationTile3);
+    const tile3 = new THREE.Mesh( geometryTile, yellowMaterial);
+    placeObj(tile3, [0, -tileDepth / 2, 0]);
+    rotationTile3.add(tile3);
 
     const geometryCone = new THREE.ConeGeometry( coneRadius, coneHeight, 4, 1, false );
-    const cone = new THREE.Mesh( geometryCone, yellowMaterial );
-    cone.rotateY(Math.PI / 4);
-    cone.rotation.x = -Math.PI / 2;
-    cone.position.z = - coneHeight / 2 - 2;
-    rotationCone.add(cone);
+    const cone = new THREE.Mesh( geometryCone, yellowMaterial);
+    //cone.rotateY(Math.PI / 4);
+    //cone.rotation.x = -Math.PI / 2;
+    cone.position.y = - coneHeight / 2 - tileDepth / 2;
+    cone.rotateX(Math.PI);
+    tile3.add(cone);
     body.add(rotationCone);                      //0-0-4
 
     const geometryHead = new THREE.BoxGeometry(headWidth, headHeight, headDepth);
     const head = new THREE.Mesh(geometryHead, greenMaterial);
-    head.position.y = headHeight / 2;
-    head.position.z = headDepth / 2 + bodyDepth / 2 + 1;
-    center.add(head);                              //0-1
+    //head.position.y = headHeight / 2;
+    head.position.z = headDepth / 2;
+
+    const rotationHead = new THREE.Object3D();
+    center.add(rotationHead);
+    rotationHead.position.y =  headHeight / 2;
+    rotationHead.position.z = bodyDepth / 2 + 0.5;
+
+    //rotationHead.quaternion.set(-0.034, -0.257, 0.126, 0.958);
+    center.add(rotationHead);                              //0-1
+    rotationHead.add(head);                                //0-1-0
     head.layers.set(1);
+
+    //center.children[1].quaternion.set(-0.034, -0.257, 0.126, 0.958);
+
+    const geometryHeadBottom = new THREE.BoxGeometry(headWidth - 2, headHeight / 6, headDepth / 2);
+    const headBottom = new THREE.Mesh(geometryHeadBottom, greenMaterial);
+    head.add(headBottom);
+    placeObj(headBottom, [0, -(headHeight + headHeight / 6) / 2, headDepth / 4 - 0.2]);
+
+    const geometryMouth = new THREE.RingGeometry( 0.2, 0.4, 32, 8, Math.PI, Math.PI);
+    const mouth = new THREE.Mesh( geometryMouth, blackMaterial );
+    head.add( mouth );
+    placeObj(mouth, [0, -headHeight / 2 + 0.2, headDepth / 2 + 0.01]);
 
     const eyeGeometry = new THREE.BoxGeometry(eyeWidth, eyeHeight, eyeDepth);
     const eye1 = new THREE.Mesh(eyeGeometry, whiteMaterial);
@@ -430,8 +544,8 @@ function createDrake() {
     const innerEye1 = new THREE.Mesh(innerEyeGeometry, redMaterial);
     const innerEye2 = new THREE.Mesh(innerEyeGeometry, redMaterial);
 
-    placeObj(innerEye1, [0, - (0.1), (0.1)]);
-    placeObj(innerEye2, [0, - (0.1), (0.1)]);
+    placeObj(innerEye1, [0, - (0.35), (0.36)]);
+    placeObj(innerEye2, [0, - (0.35), (0.36)]);
 
     eye1.add(innerEye1);
     eye2.add(innerEye2);
@@ -492,6 +606,12 @@ function createDrake() {
         leg2: leg2,
         leg3: leg3,
         leg4: leg4,
+        wing1: wing1,
+        wing2: wing2,
+        tile: tile,
+        tile2: tile2,
+        tile3: tile3,
+        cone: cone,
         mainScene: null,
         width: headWidth,
         height: (2.5 + legHeight) * 2,
@@ -505,6 +625,12 @@ function createDrake() {
                 actions[anim][0].time > 0.6 ||
                 restart == true
               ) {
+                actions["slip"].forEach((action) => {
+                    action.stop();   
+                  });
+                  actions["jump"].forEach((action) => {
+                    action.stop();   
+                });
                 if (loop == true) {
                   actions[anim].forEach((action) => {
                     action.play().reset();
@@ -539,6 +665,9 @@ function createDrake() {
             return false;
         },
         stopAnimation: function (anim) {
+            actions[anim].forEach((action) => {
+                action.stop();
+              });
         },
         setShadow: function (bool) {
             this.head.castShadow = bool;
@@ -547,6 +676,12 @@ function createDrake() {
             this.leg2.castShadow = bool;
             this.leg3.castShadow = bool;
             this.leg4.castShadow = bool;
+            this.wing1.castShadow = bool;
+            this.wing2.castShadow = bool;
+            this.tile.castShadow = bool;
+            this.tile2.castShadow = bool;
+            this.tile3.castShadow = bool;
+            this.cone.castShadow = bool;
           }
     }
 
@@ -555,6 +690,8 @@ function createDrake() {
     createDrakeSlipAnimation(ret, mixers, actions);
     createDrakeJumpAnimation(ret, mixers, actions);
     createAnimationWalking(ret, mixers, actions);
+    createDrakeAnimationHead(ret, mixers, actions);
+    createRotationTile(ret, mixers, actions);
 
     return ret;
 }

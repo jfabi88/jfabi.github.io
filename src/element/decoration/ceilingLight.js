@@ -126,6 +126,7 @@ function createGeoMatCeilingLamp(w, h, d, s = 0.5) {
   const materialOctagon = new THREE.MeshPhongMaterial({
     color: 0xFFFFCC,
     opacity: 0.2,
+    emissive: "yellow",
   });
 
   geometryLamp.push(geometryExternal, geometryOctagon);
@@ -148,10 +149,10 @@ function createCeilingLampOptimized() {
   target.position.set(0.0, -4.0, 0.0);
 
   const spotLight = new THREE.SpotLight( 0xFFFFCC );
-  spotLight.intensity = 0.6;
-  spotLight.decay = 2;
+  spotLight.intensity = 0.9;
+  spotLight.decay = 1;
   spotLight.penumbra = 0.2;
-  spotLight.distance = 200;
+  spotLight.distance = 180;
   spotLight.angle = Math.PI / 8;
   spotLight.position.set(0, 0, 0.5);
   spotLight.target = target;
