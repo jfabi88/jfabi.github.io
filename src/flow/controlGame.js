@@ -94,6 +94,8 @@ function setControl(document, window, renderer, mainScene, memory)
     document.getElementById("restart").onclick = function () {
         const menu = document.getElementById("menu");
         menu.style.visibility = "hidden";
+        const button = document.getElementById("restart");
+        button.style.visibility = "hidden";
         reset(mainScene, memory);
         score.textContent = 0;
         createWay(mainScene, memory);

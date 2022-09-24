@@ -86,6 +86,8 @@ function takeElement(elementMemory, type) {
 function stop(mainScene) {
     const menu = document.getElementById("menu");
     menu.style.visibility = "visible";
+    const button = document.getElementById("restart");
+    button.style.visibility = "visible";
     mainScene.pause = true;
     mainScene.died = true;
 }
