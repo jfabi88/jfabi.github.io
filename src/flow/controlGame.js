@@ -46,7 +46,7 @@ function onKeyPress(key, mainScene) {
             rotationCamera(mainScene, Math.PI / 2);
         }
     }
-    else if (key == " ") {
+    else if (key == "m") {
         if (mainScene.pause == true && mainScene.died == false) {
             const elem = document.getElementById("pressStart");
             elem.style.visibility = "hidden";
@@ -91,8 +91,7 @@ function setControl(document, window, renderer, mainScene, memory)
         }
     });
 
-    document.getElementById("restart").onclick = function (e) {
-        if (e != "32") {
+    document.getElementById("restart").onclick = function () {
             const menu = document.getElementById("menu");
             menu.style.visibility = "hidden";
             const button = document.getElementById("restart");
@@ -103,7 +102,6 @@ function setControl(document, window, renderer, mainScene, memory)
             mainScene.cat.playAnimation("walk", true);
             mainScene.cat.playAnimation("tile", true);
             console.log("Tasto restart premuto!");
-        }
     };
 
     document.getElementById("start").onclick = function () {
